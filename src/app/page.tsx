@@ -58,7 +58,9 @@ export default function Home() {
                     src={"/dashboard-preview.jpg"}
                     height={866}
                     width={1364}
+                    quality={100}
                     alt="Product Preview"
+                    className="rounded-md bg-white p-2 sm:p-8 md:p-20 shadow-2xl ring-1 ring-gray-900/10"
                   />
                 </div>
               </div>
