@@ -44,13 +44,12 @@ export default function Navbar() {
                             <RegisterLink
                                 className={cn(
                                     buttonVariants({
-                                        variant: "ghost",
                                         size: "sm",
                                     }),
-                                    "text-base font-medium"
+                                    "text-center py-5"
                                 )}
                             >
-                                Sign up
+                                Start for free
                             </RegisterLink>
                         </>
                     </div>
