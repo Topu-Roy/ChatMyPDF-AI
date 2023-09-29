@@ -79,8 +79,55 @@ export default function Home() {
               className="relative left-[calc(95%-1rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[90deg] bg-gradient-to-tr from-[#80ffc2] to-[#81e673] opacity-30 sm:left-[calc(95%-5rem)] sm:w-[72.1875rem]"
             />
           </div>
-
         </div>
+      </div>
+
+      {/* Feature Section */}
+      <div className="mx-auto mb-32 max-w-5xl mt-32 sm:mt-28">
+        <div className="mb-12 px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl sm:text-center">
+            <h2 className="mt-2 font-bold text-4xl text-gray-900 sm:text-5xl">
+              Start chatting in minutes.
+            </h2>
+            <p className="mt-4 text-lg text-gray-600">
+              Chatting based on your PDF are never been more easily with ChatMyPDF.
+            </p>
+          </div>
+        </div>
+
+        {/* Steps */}
+        <ol className="my-8 space-y-4 pt-8 md:flex md:space-x-12 md:space-y-0">
+          <li className="md:flex-1">
+            <div className="flex flex-col space-y-2 border-l-4 border-zinc-300 py-2 pl-4 md:border-l-0 md:border-t-2 md:pb-0 md:pt-4">
+              <span className="text-sm font-medium text-blue-600">Step 1</span>
+              <span className="text-xl font-semibold">Sign up for an account</span>
+              <span className="mt-2 text-zinc-700">
+                Start for free or {" "}
+                <Link href={'/pricing'} className="text-blue-700 underline underline-offset-2">upgrade to pro</Link>
+                {" "} for premium treatment.
+              </span>
+            </div>
+          </li>
+          <li className="md:flex-1">
+            <div className="flex flex-col space-y-2 border-l-4 border-zinc-300 py-2 pl-4 md:border-l-0 md:border-t-2 md:pb-0 md:pt-4">
+              <span className="text-sm font-medium text-blue-600">Step 2</span>
+              <span className="text-xl font-semibold">Upload your PDF file</span>
+              <span className="mt-2 text-zinc-700">
+                we&apos;ll process your PDF file and make it ready to chat.
+              </span>
+            </div>
+          </li>
+          <li className="md:flex-1">
+            <div className="flex flex-col space-y-2 border-l-4 border-zinc-300 py-2 pl-4 md:border-l-0 md:border-t-2 md:pb-0 md:pt-4">
+              <span className="text-sm font-medium text-blue-600">Step 3</span>
+              <span className="text-xl font-semibold">Start asking questions</span>
+              <span className="mt-2 text-zinc-700">
+                It&apos;s that simple, Try out ChatMyPDF now. Just few clicks and you are all set.
+              </span>
+            </div>
+          </li>
+        </ol>
+
       </div>
     </>
   );
