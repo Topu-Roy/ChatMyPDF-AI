@@ -83,8 +83,8 @@ export default function Home() {
       </div>
 
       {/* Feature Section */}
-      <div className="mx-auto mb-32 max-w-5xl mt-32 sm:mt-28">
-        <div className="mb-12 px-6 lg:px-8">
+      <div className="mx-auto mb-32 max-w-5xl mt-36 sm:mt-36">
+        <div className="mb-8 sm:mb-12 px-6 lg:px-8">
           <div className="mx-auto max-w-2xl sm:text-center">
             <h2 className="mt-2 font-bold text-4xl text-gray-900 sm:text-5xl">
               Start chatting in minutes.
