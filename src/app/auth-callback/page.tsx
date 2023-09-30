@@ -1,20 +1,21 @@
 'use client'
 
-import { redirect, useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { trpc } from '../_trpc/client'
 import { Loader2 } from 'lucide-react'
 
 export default function AuthCallback() {
+    const router = useRouter()
     const searchParams = useSearchParams()
     const origin = searchParams.get('origin')
 
     trpc.authCallback.useQuery(undefined, {
         onSuccess: ({ success }) => {
-            if (success) redirect(origin ? `${origin}` : '/dashboard')
+            if (success) router.replace(origin ? `${origin}` : '/dashboard')
         },
         onError: ({ data }) => {
             if (data?.code === "UNAUTHORIZED") {
-                redirect('/sign-in')
+                router.replace('/sign-in')
             }
         },
         retry: true,
