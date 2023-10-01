@@ -54,7 +54,7 @@ export default function DashboardComponent() {
                                     <p>Mocked</p>
                                 </div>
 
-                                <Button size={'sm'} variant={'destructive'} className="w-full">
+                                <Button size={'sm'} variant={'destructive'} className="w-full hover:scale-105 transition-all duration-200">
                                     <Trash className="h-4 w-4" />
                                 </Button>
                             </div>
