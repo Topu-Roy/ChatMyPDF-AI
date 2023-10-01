@@ -9,7 +9,7 @@ generator client {
 
 model User {
   id      String  @id @default(auto()) @map("_id") @db.ObjectId
-  kindeId String  @map("kinde_id")
+  kindeId String  @unique @map("kinde_id")
   email   String  @unique
   name    String?
 
@@ -40,6 +40,6 @@ model File {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 
-  User   User?   @relation(fields: [userId], references: [id])
-  userId String? @db.ObjectId
+  User        User?   @relation(fields: [kindeUserId], references: [kindeId])
+  kindeUserId String?
 }
