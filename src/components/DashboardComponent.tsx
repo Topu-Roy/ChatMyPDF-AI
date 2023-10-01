@@ -25,6 +25,10 @@ export default function DashboardComponent() {
     const { mutate: deleteFile } = trpc.deleteFile.useMutation({
         onSuccess: () => {
             utils.getUserFiles.invalidate()
+            toast({
+                title: "Delete file",
+                description: "We've deleted the file from the database",
+            })
         },
         onMutate: ({ id }) => {
             setCurrentlyDeletingFile(id)
