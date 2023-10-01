@@ -33,13 +33,15 @@ export const appRouter = router({
     return { success: true };
   }),
   getUserFiles: privateProcedure.query(async ({ ctx }) => {
-    const { user, userId } = ctx;
+    const { userId } = ctx;
 
     const files = await db.file.findMany({
       where: {
-        userId,
+        kindeUserId: userId,
       },
     });
+
+    return files;
   }),
 });
 
