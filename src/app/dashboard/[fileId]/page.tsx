@@ -1,3 +1,4 @@
+import ChatWrapper from '@/components/ChatWrapper'
 import PDFRenderer from '@/components/PDFRenderer'
 import { db } from '@/db'
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
@@ -23,14 +24,14 @@ export default async function page({ params }: PropsType) {
     }
 
     // Get the file
-    // const file = await db.file.findFirst({
-    //     where: {
-    //         kindeUserId: user.id,
-    //         id: fileId.toString(),
-    //     }
-    // })
+    const file = await db.file.findFirst({
+        where: {
+            kindeUserId: user.id,
+            id: fileId,
+        }
+    })
 
-    // if (!file) notFound()
+    if (!file) notFound()
 
     return (
         <div className='flex flex-1 justify-between flex-col h-[calc(100vh-3.5rem)]'>
@@ -41,8 +42,12 @@ export default async function page({ params }: PropsType) {
                         <PDFRenderer />
                     </div>
                 </div>
+
+                {/* Right */}
+                <div className="shrink-0 flex-[0.75] border-t border-gray-200 lg:w-96 lg:border-l lg:border-t-0">
+                    <ChatWrapper />
+                </div>
             </div>
-            <p>{fileId}</p>
         </div>
     )
 }
