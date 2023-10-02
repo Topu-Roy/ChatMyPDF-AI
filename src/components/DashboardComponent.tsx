@@ -58,7 +58,7 @@ export default function DashboardComponent() {
                     {sortedFiles?.map((file) => (
                         <li key={file.id} className="col-span-1 divide-y divide-gray-200 rounded-lg bg-white transition hover:shadow-lg">
                             <Link
-                                href={`/dashboard/${file.kindeUserId}`}
+                                href={`/dashboard/${file.id}`}
                                 className="flex flex-col gap-2"
                             >
                                 <div className="pt-6 px-6 flex w-full justify-between items-center space-x-6">
