@@ -65,7 +65,7 @@ export default function UploadDropzone() {
                     toast({
                         variant: 'destructive',
                         title: "Something went wrong",
-                        description: "Please try again",
+                        description: "Only PDF files can be uploaded",
                     })
                 }
 
@@ -77,7 +77,7 @@ export default function UploadDropzone() {
                     setUploadProgress(0)
                     return toast({
                         title: 'Something went wrong',
-                        description: 'Please try again later',
+                        description: 'File not saved on the database',
                         variant: 'destructive',
                     })
                 }
