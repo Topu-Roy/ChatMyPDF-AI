@@ -1,12 +1,48 @@
+'use client'
+
 import { Cloud, File } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
 import Dropzone from "react-dropzone";
+import { Progress } from "./ui/progress";
+import { cn } from "@/lib/utils";
 
 export default function UploadDropzone() {
+
+    const [isUploading, setIsUploading] = useState(true)
+    const [uploadProgress, setUploadProgress] = useState(0)
+
+    const startFakedUploadProgress = () => {
+        setUploadProgress(0)
+
+        const interval = setInterval(() => {
+            setUploadProgress((prevProgress) => {
+                if (prevProgress >= 90) {
+                    clearInterval(interval)
+                    return prevProgress
+                }
+
+                return prevProgress + 5
+            })
+        }, 500)
+
+        return interval;
+    }
+
     return (
         <Dropzone
             multiple={false}
-            onDrop={(acceptedFiles) => console.log(acceptedFiles)}
+            onDrop={async (acceptedFiles) => {
+                setIsUploading(true);
+
+                const progressInterval = startFakedUploadProgress()
+
+                // Pretend api request
+                await new Promise((resolve) => setTimeout(resolve, 2000))
+
+                // Clear interval after the upload
+                clearInterval(progressInterval)
+                setUploadProgress(100)
+            }}
         >
             {({ getRootProps, getInputProps, acceptedFiles }) => (
                 <div
@@ -38,11 +74,22 @@ export default function UploadDropzone() {
                                 </div>
                             ) : null}
 
+                            {isUploading ? (
+                                <div className={
+                                    cn("w-full mt-4 max-w-xs mx-auto", uploadProgress === 0 ? "hidden" : '')
+                                }>
+                                    <Progress
+                                        value={uploadProgress}
+                                        className="h-2 bg-zinc-300"
+                                    />
+                                </div>
+                            ) : null}
+
                         </label>
                         <input id="dropzone_file" {...getInputProps()} />
                     </div>
                 </div>
             )}
-        </Dropzone>
+        </Dropzone >
     );
 }
