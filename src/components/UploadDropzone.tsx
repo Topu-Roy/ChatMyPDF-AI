@@ -114,8 +114,13 @@ export default function UploadDropzone() {
                                 </div>
                             ) : null}
 
+                            <input
+                                {...getInputProps()}
+                                className="hidden"
+                                type="file"
+                                id="dropzone_file"
+                            />
                         </label>
-                        <input id="dropzone_file" {...getInputProps()} />
                     </div>
                 </div>
             )}
