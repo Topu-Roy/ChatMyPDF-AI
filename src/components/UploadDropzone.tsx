@@ -5,11 +5,17 @@ import React, { useState } from "react";
 import Dropzone from "react-dropzone";
 import { Progress } from "./ui/progress";
 import { cn } from "@/lib/utils";
+import { useUploadThing } from "@/lib/uploadthing";
+import { useToast } from "./ui/use-toast";
 
 export default function UploadDropzone() {
 
     const [isUploading, setIsUploading] = useState(true)
     const [uploadProgress, setUploadProgress] = useState(0)
+
+    const { startUpload } = useUploadThing('pdfUploader')
+
+    const { toast } = useToast()
 
     const startFakedUploadProgress = () => {
         setUploadProgress(0)
@@ -34,10 +40,33 @@ export default function UploadDropzone() {
             onDrop={async (acceptedFiles) => {
                 setIsUploading(true);
 
+                // Start the progress bar
                 const progressInterval = startFakedUploadProgress()
 
-                // Pretend api request
-                await new Promise((resolve) => setTimeout(resolve, 2000))
+                // Upload the file to uploadthing
+                const res = await startUpload(acceptedFiles)
+
+                if (!res) {
+                    setUploadProgress(0)
+                    toast({
+                        variant: 'destructive',
+                        title: "Something went wrong",
+                        description: "Please try again",
+                    })
+                }
+
+                // This is giving type error, so i added any
+                const [fileResponse]: any = res;
+                const key = fileResponse?.key
+
+                if (!key) {
+                    setUploadProgress(0)
+                    return toast({
+                        title: 'Something went wrong',
+                        description: 'Please try again later',
+                        variant: 'destructive',
+                    })
+                }
 
                 // Clear interval after the upload
                 clearInterval(progressInterval)
