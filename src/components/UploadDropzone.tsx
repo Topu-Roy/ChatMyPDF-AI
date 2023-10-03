@@ -7,15 +7,29 @@ import { Progress } from "./ui/progress";
 import { cn } from "@/lib/utils";
 import { useUploadThing } from "@/lib/uploadthing";
 import { useToast } from "./ui/use-toast";
+import { trpc } from "@/app/_trpc/client";
+import { useRouter } from "next/navigation";
 
 export default function UploadDropzone() {
 
     const [isUploading, setIsUploading] = useState(true)
     const [uploadProgress, setUploadProgress] = useState(0)
-
-    const { startUpload } = useUploadThing('pdfUploader')
+    const router = useRouter();
 
     const { toast } = useToast()
+    const { startUpload } = useUploadThing('pdfUploader')
+
+
+
+    const { mutate: startPolling } = trpc.getFile.useMutation(
+        {
+            onSuccess: (file) => {
+                router.push(`/dashboard/${file.id}`)
+            },
+            retry: true,
+            retryDelay: 500,
+        }
+    )
 
     const startFakedUploadProgress = () => {
         setUploadProgress(0)
@@ -71,6 +85,10 @@ export default function UploadDropzone() {
                 // Clear interval after the upload
                 clearInterval(progressInterval)
                 setUploadProgress(100)
+
+                // Try to get the upload progress 
+                // by checking if the file is on the db
+                startPolling({ key })
             }}
         >
             {({ getRootProps, getInputProps, acceptedFiles }) => (
