@@ -31,7 +31,7 @@ export default function PDFRenderer({ url }: PDFRendererProps) {
             <div className="h-14 w-full border-b border-zinc-200 flex items-center justify-between px-2">
                 <div className="flex items-center gap-1.5">
                     <Button
-                        disabled={currentPageOfPDF <= 0}
+                        disabled={numberOfPagesInPDF === undefined || currentPageOfPDF === 1}
                         onClick={() => (
                             setCurrentPageOfPDF(prev => (
                                 prev === 1 ? 1 : prev - 1
