@@ -1,6 +1,6 @@
 'use client'
 
-import { Cloud, File } from "lucide-react";
+import { Cloud, File, Loader2 } from "lucide-react";
 import React, { useState } from "react";
 import Dropzone from "react-dropzone";
 import { Progress } from "./ui/progress";
@@ -129,6 +129,13 @@ export default function UploadDropzone() {
                                         value={uploadProgress}
                                         className="h-2 bg-zinc-300"
                                     />
+                                </div>
+                            ) : null}
+
+                            {uploadProgress === 100 ? (
+                                <div className="flex justify-center items-center flex-col pt-4 gap-2 text-zinc-500 text-sm">
+                                    <Loader2 className="h-4 w-4 animate-spin" />
+                                    <p>Redirecting...</p>
                                 </div>
                             ) : null}
 

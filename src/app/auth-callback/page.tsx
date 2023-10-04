@@ -11,7 +11,7 @@ export default function AuthCallback() {
 
     trpc.authCallback.useQuery(undefined, {
         onSuccess: ({ success }) => {
-            if (success) router.replace(origin ? `${origin}` : '/dashboard')
+            if (success) router.replace(origin ? `/${origin}` : '/dashboard')
         },
         onError: ({ data }) => {
             if (data?.code === "UNAUTHORIZED") {
