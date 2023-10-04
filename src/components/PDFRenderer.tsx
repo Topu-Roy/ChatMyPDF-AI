@@ -9,7 +9,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form'
 
 import { useResizeDetector } from 'react-resize-detector';
-import { ChevronDown, ChevronUp, Loader2, Search } from 'lucide-react';
+import { ChevronDown, ChevronUp, Loader2, RotateCcw, RotateCw, Search } from 'lucide-react';
 import { useToast } from './ui/use-toast';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -30,6 +30,7 @@ export default function PDFRenderer({ url }: PDFRendererProps) {
     const [numberOfPagesInPDF, setNumberOfPagesInPDF] = useState<number>()
     const [currentPageOfPDF, setCurrentPageOfPDF] = useState<number>(1)
     const [zoom, setZoom] = useState<number>(1)
+    const [rotation, setRotation] = useState<number>(0)
 
     //* Utilities for better experience
     const { toast } = useToast()
@@ -62,50 +63,52 @@ export default function PDFRenderer({ url }: PDFRendererProps) {
     return (
         <div className='w-full bg-white rounded-md shadow flex items-center flex-col'>
             <div className="h-14 w-full border-b border-zinc-200 flex items-center justify-between px-2">
-                <div className="flex items-center gap-1.5">
-                    <Button
-                        disabled={numberOfPagesInPDF === undefined || currentPageOfPDF === 1}
-                        onClick={() => (
-                            setCurrentPageOfPDF(prev => (
-                                prev === 1 ? 1 : prev - 1
-                            ))
-                        )}
-                        variant={'ghost'}
-                        aria-label='Previous page'
-                    >
-                        <ChevronDown className='h-4 w-4' />
-                    </Button>
+                <div className="flex w-full justify-between items-center gap-1.5">
+                    <div className="flex justify-center items-center">
+                        <Button
+                            disabled={numberOfPagesInPDF === undefined || currentPageOfPDF === 1}
+                            onClick={() => (
+                                setCurrentPageOfPDF(prev => (
+                                    prev === 1 ? 1 : prev - 1
+                                ))
+                            )}
+                            variant={'ghost'}
+                            aria-label='Previous page'
+                        >
+                            <ChevronDown className='h-4 w-4' />
+                        </Button>
 
-                    <div className="flex items-center gap-1.5">
-                        <Input
-                            {...register('page')}
-                            className={cn('w-12 h-8', errors.page && 'focus-visible:ring-red-500')}
-                            onKeyDown={(e) => {
-                                if (e.code === "Enter") {
-                                    handleSubmit(handlePageSubmit)()
-                                }
-                            }}
-                        />
-                        <p className='text-zinc-700 text-sm space-x-1'>
-                            <span>/</span>
-                            <span>{numberOfPagesInPDF ?? 'x'}</span>
-                        </p>
+                        <div className="flex items-center gap-1.5">
+                            <Input
+                                {...register('page')}
+                                className={cn('w-12 h-8', errors.page && 'focus-visible:ring-red-500')}
+                                onKeyDown={(e) => {
+                                    if (e.code === "Enter") {
+                                        handleSubmit(handlePageSubmit)()
+                                    }
+                                }}
+                            />
+                            <p className='text-zinc-700 text-sm space-x-1'>
+                                <span>/</span>
+                                <span>{numberOfPagesInPDF ?? 'x'}</span>
+                            </p>
+                        </div>
+
+                        <Button
+                            disabled={numberOfPagesInPDF === undefined || currentPageOfPDF === numberOfPagesInPDF}
+                            onClick={() => (
+                                setCurrentPageOfPDF(prev => (
+                                    prev === numberOfPagesInPDF ? numberOfPagesInPDF : prev + 1
+                                ))
+                            )}
+                            variant={'ghost'}
+                            aria-label='Previous page'
+                        >
+                            <ChevronUp className='h-4 w-4' />
+                        </Button>
                     </div>
 
-                    <Button
-                        disabled={numberOfPagesInPDF === undefined || currentPageOfPDF === numberOfPagesInPDF}
-                        onClick={() => (
-                            setCurrentPageOfPDF(prev => (
-                                prev === numberOfPagesInPDF ? numberOfPagesInPDF : prev + 1
-                            ))
-                        )}
-                        variant={'ghost'}
-                        aria-label='Previous page'
-                    >
-                        <ChevronUp className='h-4 w-4' />
-                    </Button>
-
-                    <div className="space-x-2">
+                    <div className="flex justify-center items-center gap-1.5">
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                                 <Button
@@ -133,6 +136,21 @@ export default function PDFRenderer({ url }: PDFRendererProps) {
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
+
+                        <Button
+                            variant={'ghost'}
+                            aria-label='Rotate Right'
+                            onClick={() => setRotation(prev => prev + 90)}
+                        >
+                            <RotateCw className='h-4 w-4' />
+                        </Button>
+                        <Button
+                            variant={'ghost'}
+                            aria-label='Rotate Left'
+                            onClick={() => setRotation(prev => prev - 90)}
+                        >
+                            <RotateCcw className='h-4 w-4' />
+                        </Button>
                     </div>
                 </div>
             </div>
@@ -160,6 +178,7 @@ export default function PDFRenderer({ url }: PDFRendererProps) {
                                 width={width ? width : 1}
                                 pageNumber={currentPageOfPDF}
                                 scale={zoom}
+                                rotate={rotation}
                             />
                         </Document>
                     </div>
