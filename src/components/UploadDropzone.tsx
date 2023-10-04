@@ -126,6 +126,7 @@ export default function UploadDropzone() {
                                     cn("w-full mt-4 max-w-xs mx-auto", uploadProgress === 0 ? "hidden" : '')
                                 }>
                                     <Progress
+                                        successColor={uploadProgress === 100 ? "bg-green-500" : ''}
                                         value={uploadProgress}
                                         className="h-2 bg-zinc-300"
                                     />
@@ -133,7 +134,7 @@ export default function UploadDropzone() {
                             ) : null}
 
                             {uploadProgress === 100 ? (
-                                <div className="flex justify-center items-center flex-col pt-4 gap-2 text-zinc-500 text-sm">
+                                <div className="flex justify-center items-center flex-col pt-4 gap-2 text-zinc-500 text-sm text-center">
                                     <Loader2 className="h-4 w-4 animate-spin" />
                                     <p>Redirecting...</p>
                                 </div>
