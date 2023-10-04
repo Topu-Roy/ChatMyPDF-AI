@@ -9,14 +9,15 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form'
 
 import { useResizeDetector } from 'react-resize-detector';
-import { ChevronDown, ChevronUp, Loader2 } from 'lucide-react';
+import { ChevronDown, ChevronUp, Loader2, Search } from 'lucide-react';
 import { useToast } from './ui/use-toast';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { cn } from '@/lib/utils';
-
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from './ui/dropdown-menu';
+import SimpleBar from 'simplebar-react'
 //* PDF worker
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`
 
@@ -25,9 +26,10 @@ type PDFRendererProps = {
 }
 
 export default function PDFRenderer({ url }: PDFRendererProps) {
-    //* States for PDF pages and navigation among them
+    //* States for PDF Controls and navigation
     const [numberOfPagesInPDF, setNumberOfPagesInPDF] = useState<number>()
     const [currentPageOfPDF, setCurrentPageOfPDF] = useState<number>(1)
+    const [zoom, setZoom] = useState<number>(1)
 
     //* Utilities for better experience
     const { toast } = useToast()
@@ -102,30 +104,66 @@ export default function PDFRenderer({ url }: PDFRendererProps) {
                     >
                         <ChevronUp className='h-4 w-4' />
                     </Button>
+
+                    <div className="space-x-2">
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button
+                                    className='gap-1.5'
+                                    aria-label='zoom'
+                                    variant={'ghost'}
+                                >
+                                    <Search className='h-4 w-4' />
+                                    {zoom * 100}%
+                                    <ChevronDown className='h-3 w-3 opacity-70' />
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent>
+                                <DropdownMenuItem onSelect={() => setZoom(1)}>
+                                    100%
+                                </DropdownMenuItem>
+                                <DropdownMenuItem onSelect={() => setZoom(1.5)}>
+                                    150%
+                                </DropdownMenuItem>
+                                <DropdownMenuItem onSelect={() => setZoom(2)}>
+                                    200%
+                                </DropdownMenuItem>
+                                <DropdownMenuItem onSelect={() => setZoom(2.5)}>
+                                    250%
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    </div>
                 </div>
             </div>
 
             <div className="flex w-full max-h-screen">
-                <div ref={ref} className='h-full w-full'>
-                    <Document
-                        file={url}
-                        className='max-h-full'
-                        loading={
-                            <div className='h-full w-full flex justify-center items-center'>
-                                <Loader2 className='h-6 w-6 my-24 animate-spin text-zinc-800' />
-                            </div>
-                        }
-                        onLoadSuccess={({ numPages }) => setNumberOfPagesInPDF(numPages)}
-                        onError={() => (
-                            toast({
-                                title: "Couldn't get the file",
-                                description: "Something went wrong, please try again"
-                            }))
-                        }
-                    >
-                        <Page width={width ? width : 1} pageNumber={currentPageOfPDF} />
-                    </Document>
-                </div>
+                <SimpleBar autoHide={false} className='max-h-[calc(100vh-10rem)] w-full'>
+                    <div ref={ref} className='h-full w-full'>
+                        <Document
+                            file={url}
+                            className='max-h-full'
+                            loading={
+                                <div className='h-full w-full flex justify-center items-center'>
+                                    <Loader2 className='h-6 w-6 my-24 animate-spin text-zinc-800' />
+                                </div>
+                            }
+                            onLoadSuccess={({ numPages }) => setNumberOfPagesInPDF(numPages)}
+                            onError={() => (
+                                toast({
+                                    title: "Couldn't get the file",
+                                    description: "Something went wrong, please try again"
+                                }))
+                            }
+                        >
+                            <Page
+                                width={width ? width : 1}
+                                pageNumber={currentPageOfPDF}
+                                scale={zoom}
+                            />
+                        </Document>
+                    </div>
+                </SimpleBar>
             </div>
         </div>
     )
