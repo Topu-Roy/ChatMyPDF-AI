@@ -5,12 +5,15 @@ import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 
+import { useState } from 'react';
+import { useForm } from 'react-hook-form'
+
 import { useResizeDetector } from 'react-resize-detector';
 import { ChevronDown, ChevronUp, Loader2 } from 'lucide-react';
 import { useToast } from './ui/use-toast';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
-import { useState } from 'react';
+import { z } from 'zod';
 
 //* PDF worker
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`
@@ -20,11 +23,26 @@ type PDFRendererProps = {
 }
 
 export default function PDFRenderer({ url }: PDFRendererProps) {
+    //* States for PDF pages and navigation among them
     const [numberOfPagesInPDF, setNumberOfPagesInPDF] = useState<number>()
     const [currentPageOfPDF, setCurrentPageOfPDF] = useState<number>(1)
 
+    //* Utilities for better experience
     const { toast } = useToast()
     const { width, ref } = useResizeDetector()
+
+    //* React Hook Forms for PDF pages Input field
+    const { } = useForm<CustomPageValidatorType>({
+        defaultValues: {
+            page: currentPageOfPDF.toString()
+        }
+    })
+
+    const CustomPageValidator = z.object({
+        page: z.string().refine((num) => Number(num) > 0 && Number(num) < numberOfPagesInPDF!)
+    })
+
+    type CustomPageValidatorType = z.infer<typeof CustomPageValidator>
 
     return (
         <div className='w-full bg-white rounded-md shadow flex items-center flex-col'>
