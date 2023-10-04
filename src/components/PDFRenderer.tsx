@@ -15,6 +15,7 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { cn } from '@/lib/utils';
 
 //* PDF worker
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`
@@ -37,12 +38,24 @@ export default function PDFRenderer({ url }: PDFRendererProps) {
         page: z.string().refine((num) => Number(num) > 0 && Number(num) < numberOfPagesInPDF!)
     })
 
-    const { } = useForm<z.infer<typeof CustomPageValidator>>({
+    type CustomPageValidationType = z.infer<typeof CustomPageValidator>
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        setValue
+    } = useForm<CustomPageValidationType>({
         defaultValues: {
             page: currentPageOfPDF.toString()
         },
         resolver: zodResolver(CustomPageValidator)
     })
+
+    const handlePageSubmit = ({ page }: CustomPageValidationType) => {
+        setCurrentPageOfPDF(Number(page))
+        setValue("page", page)
+    }
 
     return (
         <div className='w-full bg-white rounded-md shadow flex items-center flex-col'>
@@ -62,7 +75,15 @@ export default function PDFRenderer({ url }: PDFRendererProps) {
                     </Button>
 
                     <div className="flex items-center gap-1.5">
-                        <Input className='w-12 h-8' />
+                        <Input
+                            {...register('page')}
+                            className={cn('w-12 h-8', errors.page && 'focus-visible:ring-red-500')}
+                            onKeyDown={(e) => {
+                                if (e.code === "Enter") {
+                                    handleSubmit(handlePageSubmit)()
+                                }
+                            }}
+                        />
                         <p className='text-zinc-700 text-sm space-x-1'>
                             <span>/</span>
                             <span>{numberOfPagesInPDF ?? 'x'}</span>
