@@ -2,6 +2,7 @@
 
 import { Loader2 } from 'lucide-react';
 import { useToast } from './ui/use-toast';
+import { useResizeDetector } from 'react-resize-detector';
 
 //* React PDF
 import { Document, Page, pdfjs } from 'react-pdf';
@@ -19,6 +20,8 @@ export default function PDFRenderer({ url }: PDFRendererProps) {
 
     const { toast } = useToast()
 
+    const { width, ref } = useResizeDetector()
+
     return (
         <div className='w-full bg-white rounded-md shadow flex items-center flex-col'>
             <div className="h-14 w-full border-b border-zinc-200 flex items-center justify-between px-2">
@@ -28,7 +31,7 @@ export default function PDFRenderer({ url }: PDFRendererProps) {
             </div>
 
             <div className="flex w-full max-h-screen">
-                <div className='h-full w-full'>
+                <div ref={ref} className='h-full w-full'>
                     <Document
                         file={url}
                         className='max-h-full'
@@ -45,7 +48,7 @@ export default function PDFRenderer({ url }: PDFRendererProps) {
 
                         }
                     >
-                        <Page pageNumber={1} />
+                        <Page width={width ? width : 1} pageNumber={1} />
                     </Document>
                 </div>
             </div>
