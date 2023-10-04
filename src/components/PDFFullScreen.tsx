@@ -1,37 +1,28 @@
-import React, { useState } from 'react'
-import { Dialog, DialogContent, DialogTrigger } from './ui/dialog'
-import { Button } from './ui/button'
-import { ExpandIcon, Loader2 } from 'lucide-react'
+import { useState } from 'react'
 import SimpleBar from 'simplebar-react'
 import { Document, Page } from 'react-pdf'
 import { useResizeDetector } from 'react-resize-detector'
+
+import { Button } from './ui/button'
+import { Dialog, DialogContent, DialogTrigger } from './ui/dialog'
 import { useToast } from './ui/use-toast'
+import { ExpandIcon, Loader2 } from 'lucide-react'
 
-type Props = {
-    url: string
-}
 
-export default function PDFFullScreen({ url }: Props) {
-    //* States for PDF Controls and navigation
+export default function PDFFullScreen({ url }: { url: string }) {
     const [numberOfPagesInPDF, setNumberOfPagesInPDF] = useState<number>()
-    const [currentPageOfPDF, setCurrentPageOfPDF] = useState<number>(1)
-    const [zoom, setZoom] = useState<number>(1)
-    const [rotation, setRotation] = useState<number>(0)
+    const [isOpen, setIsOpen] = useState(false)
 
     //* Utilities for better experience
     const { toast } = useToast()
     const { width, ref } = useResizeDetector()
-
-
-    const [isOpen, setIsOpen] = useState(false)
-
 
     return (
         <Dialog
             open={isOpen}
             onOpenChange={(v) => !v && setIsOpen(v)}
         >
-            <DialogTrigger asChild>
+            <DialogTrigger onClick={() => setIsOpen(true)} asChild>
                 <Button variant={'ghost'} aria-label='Fullscreen PDF' className='gap-1.5'>
                     <ExpandIcon className='h-4 w-4' />
                 </Button>
