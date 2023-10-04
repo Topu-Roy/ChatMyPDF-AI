@@ -72,7 +72,6 @@ export default function PDFRenderer({ url }: PDFRendererProps) {
                                 setCurrentPageOfPDF(prev => (
                                     prev === 1 ? 1 : prev - 1
                                 ))
-                                setValue('page', String(currentPageOfPDF === 1 ? 1 : currentPageOfPDF - 1))
                             }}
                             variant={'ghost'}
                             aria-label='Previous page'
@@ -102,7 +101,6 @@ export default function PDFRenderer({ url }: PDFRendererProps) {
                                 setCurrentPageOfPDF(prev => (
                                     prev === numberOfPagesInPDF ? numberOfPagesInPDF : prev + 1
                                 ))
-                                setValue('page', String(currentPageOfPDF === numberOfPagesInPDF ? numberOfPagesInPDF : currentPageOfPDF + 1))
                             }}
                             variant={'ghost'}
                             aria-label='Previous page'
