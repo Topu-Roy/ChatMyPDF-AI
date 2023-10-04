@@ -39,7 +39,7 @@ export default function PDFRenderer({ url }: PDFRendererProps) {
 
     //* React Hook Forms for PDF pages Input field
     const CustomPageValidator = z.object({
-        page: z.string().refine((num) => Number(num) > 0 && Number(num) < numberOfPagesInPDF!)
+        page: z.string().refine((num) => Number(num) > 0 && Number(num) <= numberOfPagesInPDF!)
     })
 
     type CustomPageValidationType = z.infer<typeof CustomPageValidator>
