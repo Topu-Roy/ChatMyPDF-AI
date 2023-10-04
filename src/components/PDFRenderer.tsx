@@ -54,7 +54,7 @@ export default function PDFRenderer({ url }: PDFRendererProps) {
 
     const handlePageSubmit = ({ page }: CustomPageValidationType) => {
         setCurrentPageOfPDF(Number(page))
-        setValue("page", page)
+        setValue("page", String(page))
     }
 
     return (
