@@ -18,6 +18,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { cn } from '@/lib/utils';
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from './ui/dropdown-menu';
 import SimpleBar from 'simplebar-react'
+import PDFFullScreen from './PDFFullScreen';
 //* PDF worker
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`
 
@@ -67,11 +68,12 @@ export default function PDFRenderer({ url }: PDFRendererProps) {
                     <div className="flex justify-center items-center">
                         <Button
                             disabled={numberOfPagesInPDF === undefined || currentPageOfPDF === 1}
-                            onClick={() => (
+                            onClick={() => {
                                 setCurrentPageOfPDF(prev => (
                                     prev === 1 ? 1 : prev - 1
                                 ))
-                            )}
+                                setValue('page', String(currentPageOfPDF === 1 ? 1 : currentPageOfPDF - 1))
+                            }}
                             variant={'ghost'}
                             aria-label='Previous page'
                         >
@@ -96,11 +98,12 @@ export default function PDFRenderer({ url }: PDFRendererProps) {
 
                         <Button
                             disabled={numberOfPagesInPDF === undefined || currentPageOfPDF === numberOfPagesInPDF}
-                            onClick={() => (
+                            onClick={() => {
                                 setCurrentPageOfPDF(prev => (
                                     prev === numberOfPagesInPDF ? numberOfPagesInPDF : prev + 1
                                 ))
-                            )}
+                                setValue('page', String(currentPageOfPDF === numberOfPagesInPDF ? numberOfPagesInPDF : currentPageOfPDF + 1))
+                            }}
                             variant={'ghost'}
                             aria-label='Previous page'
                         >
@@ -151,6 +154,8 @@ export default function PDFRenderer({ url }: PDFRendererProps) {
                         >
                             <RotateCcw className='h-4 w-4' />
                         </Button>
+
+                        <PDFFullScreen url={url} />
                     </div>
                 </div>
             </div>
