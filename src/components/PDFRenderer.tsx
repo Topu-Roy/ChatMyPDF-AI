@@ -1,14 +1,16 @@
 'use client'
 
-// React PDF
-import { Document, Page } from 'react-pdf';
-import { pdfjs } from 'react-pdf';
+//* React PDF
+import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 
 type PDFRendererProps = {
     url: string
 }
+
+//* PDF worker
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`
 
 export default function PDFRenderer({ url }: PDFRendererProps) {
     return (
@@ -21,8 +23,8 @@ export default function PDFRenderer({ url }: PDFRendererProps) {
 
             <div className="flex w-full max-h-screen">
                 <div>
-                    <Document file={url}>
-
+                    <Document file={url} className='max-h-full'>
+                        <Page pageNumber={1} />
                     </Document>
                 </div>
             </div>
