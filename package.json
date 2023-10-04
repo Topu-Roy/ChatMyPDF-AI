@@ -36,7 +36,7 @@
     "tailwind-merge": "^1.14.0",
     "tailwindcss-animate": "^1.0.7",
     "uploadthing": "5.6.1",
-    "zod": "^3.22.2"
+    "zod": "^3.21.4"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.10",

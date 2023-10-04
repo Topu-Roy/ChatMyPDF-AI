@@ -14,6 +14,7 @@ import { useToast } from './ui/use-toast';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 //* PDF worker
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`
@@ -32,17 +33,16 @@ export default function PDFRenderer({ url }: PDFRendererProps) {
     const { width, ref } = useResizeDetector()
 
     //* React Hook Forms for PDF pages Input field
-    const { } = useForm<CustomPageValidatorType>({
-        defaultValues: {
-            page: currentPageOfPDF.toString()
-        }
-    })
-
     const CustomPageValidator = z.object({
         page: z.string().refine((num) => Number(num) > 0 && Number(num) < numberOfPagesInPDF!)
     })
 
-    type CustomPageValidatorType = z.infer<typeof CustomPageValidator>
+    const { } = useForm<z.infer<typeof CustomPageValidator>>({
+        defaultValues: {
+            page: currentPageOfPDF.toString()
+        },
+        resolver: zodResolver(CustomPageValidator)
+    })
 
     return (
         <div className='w-full bg-white rounded-md shadow flex items-center flex-col'>
