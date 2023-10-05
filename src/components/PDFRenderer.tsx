@@ -32,6 +32,9 @@ export default function PDFRenderer({ url }: PDFRendererProps) {
     const [currentPageOfPDF, setCurrentPageOfPDF] = useState<number>(1)
     const [zoom, setZoom] = useState<number>(1)
     const [rotation, setRotation] = useState<number>(0)
+    const [renderedZoom, setRenderedZoom] = useState<number | null>(null)
+
+    const isLoading = renderedZoom !== zoom
 
     //* Utilities for better experience
     const { toast } = useToast()
@@ -179,11 +182,28 @@ export default function PDFRenderer({ url }: PDFRendererProps) {
                                 }))
                             }
                         >
+                            {isLoading && renderedZoom ? (
+                                <Page
+                                    width={width ? width : 1}
+                                    pageNumber={currentPageOfPDF}
+                                    scale={zoom}
+                                    rotate={rotation}
+                                    key={"@" + zoom}
+                                />
+                            ) : null}
                             <Page
+                                className={cn('w-full h-full', isLoading ? 'hidden' : '')}
                                 width={width ? width : 1}
                                 pageNumber={currentPageOfPDF}
+                                key={"@" + renderedZoom}
                                 scale={zoom}
                                 rotate={rotation}
+                                loading={
+                                    <div className='h-full w-full flex justify-center items-center'>
+                                        <Loader2 className='h-6 w-6 my-24 animate-spin text-zinc-800' />
+                                    </div>
+                                }
+                                onRenderSuccess={() => setRenderedZoom(zoom)}
                             />
                         </Document>
                     </div>
