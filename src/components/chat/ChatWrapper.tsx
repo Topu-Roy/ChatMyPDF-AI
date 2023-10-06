@@ -3,7 +3,7 @@
 import Messages from './Messages'
 import ChatInput from './ChatInput'
 import { trpc } from '@/app/_trpc/client'
-import { Loader2 } from 'lucide-react'
+import { Loader2, XCircle } from 'lucide-react'
 
 export default function ChatWrapper({ fileId }: { fileId: string }) {
 
@@ -11,7 +11,7 @@ export default function ChatWrapper({ fileId }: { fileId: string }) {
         refetchInterval: (data) => (data?.status === 'SUCCESS' || data?.status === 'FAILED' ? false : 500)
     })
 
-    if (true) {
+    if (isLoading) {
         return (
             <div className='relative min-h-full bg-zinc-50 flex divide-y divide-zinc-200 items-center justify-center'>
                 <div className="flex flex-1 flex-col justify-between items-center mb-28">
@@ -22,6 +22,46 @@ export default function ChatWrapper({ fileId }: { fileId: string }) {
                         </h3>
                         <p className='text-zinc-500 text-sm text-center'>
                             We&apos;re preparing your PDF.
+                        </p>
+                    </div>
+
+                    <ChatInput isDisabled={true} />
+                </div>
+            </div>
+        )
+    }
+
+    if (data?.status === 'PROCESSING') {
+        return (
+            <div className='relative min-h-full bg-zinc-50 flex divide-y divide-zinc-200 items-center justify-center'>
+                <div className="flex flex-1 flex-col justify-between items-center mb-28">
+                    <div className='flex flex-col justify-center items-center gap-2'>
+                        <Loader2 className='h-8 w-8 text-blue-500 animate-spin' />
+                        <h3 className='font-semibold text-xl'>
+                            Processing your PDF...
+                        </h3>
+                        <p className='text-zinc-500 text-sm text-center'>
+                            Just a few seconds.
+                        </p>
+                    </div>
+
+                    <ChatInput isDisabled={true} />
+                </div>
+            </div>
+        )
+    }
+
+    if (data?.status === 'FAILED') {
+        return (
+            <div className='relative min-h-full bg-zinc-50 flex divide-y divide-zinc-200 items-center justify-center'>
+                <div className="flex flex-1 flex-col justify-between items-center mb-28">
+                    <div className='flex flex-col justify-center items-center gap-2'>
+                        <XCircle className='h-8 w-8 text-blue-500' />
+                        <h3 className='font-semibold text-xl'>
+                            Too many pages...
+                        </h3>
+                        <p className='text-zinc-500 text-sm text-center'>
+                            Please upgrade your plan.
                         </p>
                     </div>
 
