@@ -12,6 +12,9 @@ export default function ChatInput({ isDisabled }: Props) {
                     <div className="relative flex flex-col w-full flex-grow p-4">
                         <div className="relative">
                             <Textarea
+                                rows={1}
+                                maxRows={4}
+                                autoFocus
                                 placeholder='Enter your prompt text'
                             />
                         </div>
