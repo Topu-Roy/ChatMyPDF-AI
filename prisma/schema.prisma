@@ -13,7 +13,8 @@ model User {
   email   String  @unique
   name    String?
 
-  File File[]
+  File    File[]
+  Message Message[]
 
   stripeCustomerId       String? @unique @map("stripe_customer_id")
   stripeSubscribtionId   String? @unique @map("stripe_subscription_id")
@@ -29,17 +30,28 @@ enum UploadStatus {
 }
 
 model File {
-  id   String @id @default(auto()) @map("_id") @db.ObjectId
-  name String
-
+  id           String       @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
   uploadStatus UploadStatus @default(PENDING)
+  url          String
+  key          String
 
-  url String
-  key String
+  Message Message[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 
   User        User?   @relation(fields: [kindeUserId], references: [kindeId])
   kindeUserId String?
+}
+
+model Message {
+  id            String  @id @default(auto()) @map("_id") @db.ObjectId
+  text          String
+  isUserMessage Boolean
+
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String? @db.ObjectId
+  File   File?   @relation(fields: [fileId], references: [id])
+  fileId String? @db.ObjectId
 }
