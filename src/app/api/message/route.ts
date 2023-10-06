@@ -25,4 +25,13 @@ export async function POST(req: NextRequest) {
   });
 
   if (!file) NextResponse.json({ error: "Not Found" }, { status: 404 });
+
+  await db.message.create({
+    data: {
+      text: message,
+      isUserMessage: true,
+      userId: user.id,
+      fileId: fileId,
+    },
+  });
 }
