@@ -1,32 +1,28 @@
 'use client'
 
-//* React PDF
 import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import 'react-pdf/dist/Page/TextLayer.css';
+import PDFFullScreen from './PDFFullScreen';
 
 import { useState } from 'react';
+import SimpleBar from 'simplebar-react'
 import { useForm } from 'react-hook-form'
-
 import { useResizeDetector } from 'react-resize-detector';
+
 import { ChevronDown, ChevronUp, Loader2, RotateCcw, RotateCw, Search } from 'lucide-react';
 import { useToast } from './ui/use-toast';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { cn } from '@/lib/utils';
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from './ui/dropdown-menu';
-import SimpleBar from 'simplebar-react'
-import PDFFullScreen from './PDFFullScreen';
+
 //* PDF worker
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`
 
-type PDFRendererProps = {
-    url: string
-}
-
-export default function PDFRenderer({ url }: PDFRendererProps) {
+export default function PDFRenderer({ url }: { url: string }) {
     //* States for PDF Controls and navigation
     const [numberOfPagesInPDF, setNumberOfPagesInPDF] = useState<number>()
     const [currentPageOfPDF, setCurrentPageOfPDF] = useState<number>(1)
