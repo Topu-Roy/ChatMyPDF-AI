@@ -4,10 +4,8 @@ type Props = {
     isDisabled?: boolean
 }
 
-function ChatInput({ isDisabled }: Props) {
+export default function ChatInput({ isDisabled }: Props) {
     return (
         <div>ChatInput</div>
     )
 }
-
-export default ChatInput

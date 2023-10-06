@@ -3,7 +3,10 @@
 import Messages from './Messages'
 import ChatInput from './ChatInput'
 import { trpc } from '@/app/_trpc/client'
-import { Loader2, XCircle } from 'lucide-react'
+import { ChevronLeft, Loader2, XCircle } from 'lucide-react'
+import Link from 'next/link'
+import { cn } from '@/lib/utils'
+import { buttonVariants } from '../ui/button'
 
 export default function ChatWrapper({ fileId }: { fileId: string }) {
 
@@ -56,13 +59,21 @@ export default function ChatWrapper({ fileId }: { fileId: string }) {
             <div className='relative min-h-full bg-zinc-50 flex divide-y divide-zinc-200 items-center justify-center'>
                 <div className="flex flex-1 flex-col justify-between items-center mb-28">
                     <div className='flex flex-col justify-center items-center gap-2'>
-                        <XCircle className='h-8 w-8 text-blue-500' />
+                        <XCircle className='h-8 w-8 text-red-700' />
                         <h3 className='font-semibold text-xl'>
                             Too many pages...
                         </h3>
                         <p className='text-zinc-500 text-sm text-center'>
                             Please upgrade your plan.
                         </p>
+                        <Link href={'/dashboard'} className={cn(buttonVariants({
+                            variant: 'outline',
+                            size: 'sm',
+                            className: 'mt-4 flex justify-center items-center gap-2'
+                        }))}>
+                            <ChevronLeft className='h-4 w-4 text-zinc-500' />
+                            <span>Dashboard</span>
+                        </Link>
                     </div>
 
                     <ChatInput isDisabled={true} />
