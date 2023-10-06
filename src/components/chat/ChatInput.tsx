@@ -1,8 +1,10 @@
 import React from 'react'
 
-type Props = {}
+type Props = {
+    isDisabled?: boolean
+}
 
-function ChatInput({ }: Props) {
+function ChatInput({ isDisabled }: Props) {
     return (
         <div>ChatInput</div>
     )
