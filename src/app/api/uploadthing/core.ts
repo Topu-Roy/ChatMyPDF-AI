@@ -19,7 +19,7 @@ export const ourFileRouter = {
       return { userId: user.id };
     })
     .onUploadComplete(async ({ metadata, file }) => {
-      // add the file to the database
+      //* add the file info to the database
 
       const createdFile = await db.file.create({
         data: {
@@ -47,15 +47,19 @@ export const ourFileRouter = {
 
         //* Vectorized and index the pdf in PineconeDB
         const pineconeIndex = pinecone.Index("chatmypdf");
+
+        //* Make embedding of the pdf with langchain
         const embeddings = new OpenAIEmbeddings({
           openAIApiKey: process.env.OPEN_AI_API_KEY,
         });
 
+        //* Insert the embedding into pinecone
         await PineconeStore.fromDocuments(pdfPageData, embeddings, {
           pineconeIndex,
           namespace: createdFile.id,
         });
 
+        //* after everything is done
         await db.file.update({
           data: {
             uploadStatus: "SUCCESS",
