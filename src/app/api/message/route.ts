@@ -6,6 +6,7 @@ import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import { PineconeStore } from "langchain/vectorstores/pinecone";
 import { NextRequest, NextResponse } from "next/server";
+import { OpenAIStream, StreamingTextResponse } from "ai";
 
 export async function POST(req: NextRequest) {
   // * Get the body
@@ -69,6 +70,7 @@ export async function POST(req: NextRequest) {
     content: msg.text,
   }));
 
+  //* Prompt and get the response stream from OpenAI
   const response = await openai.chat.completions.create({
     model: "gpt-3.5-turbo",
     temperature: 0,
@@ -100,4 +102,20 @@ export async function POST(req: NextRequest) {
       },
     ],
   });
+
+  //* Streaming the response to the client
+  const stream = OpenAIStream(response, {
+    async onCompletion(completion) {
+      await db.message.create({
+        data: {
+          userId: user.id,
+          fileId,
+          text: completion,
+          isUserMessage: false,
+        },
+      });
+    },
+  });
+
+  return new StreamingTextResponse(stream);
 }
