@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
   const file = await db.file.findFirst({
     where: {
       id: fileId,
-      kindeUserId: user.id,
+      kindeId: user.id!,
     },
   });
 
@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
     data: {
       text: message,
       isUserMessage: true,
-      userId: user.id,
+      kindeId: user.id!,
       fileId: fileId,
     },
   });
@@ -108,7 +108,7 @@ export async function POST(req: NextRequest) {
     async onCompletion(completion) {
       await db.message.create({
         data: {
-          userId: user.id,
+          kindeId: user.id!,
           fileId,
           text: completion,
           isUserMessage: false,

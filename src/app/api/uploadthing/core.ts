@@ -24,7 +24,7 @@ export const ourFileRouter = {
       const createdFile = await db.file.create({
         data: {
           name: file.name,
-          kindeUserId: metadata.userId,
+          kindeId: metadata.userId,
           uploadStatus: "PROCESSING",
           url: `https://uploadthing-prod.s3.us-west-2.amazonaws.com/${file.key}`,
           key: file.key,

@@ -26,7 +26,7 @@ export default async function page({ params }: PropsType) {
     // Get the file
     const file = await db.file.findFirst({
         where: {
-            kindeUserId: user.id,
+            kindeId: user.id,
             id: fileId,
         }
     })

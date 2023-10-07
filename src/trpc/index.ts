@@ -39,7 +39,7 @@ export const appRouter = router({
 
     const files = await db.file.findMany({
       where: {
-        kindeUserId: userId,
+        kindeId: userId,
       },
     });
 
@@ -53,7 +53,7 @@ export const appRouter = router({
 
       const file = await db.file.findFirst({
         where: {
-          kindeUserId: userId,
+          kindeId: userId,
           key: input.key,
         },
       });
@@ -71,7 +71,7 @@ export const appRouter = router({
       const file = await db.file.findFirst({
         where: {
           id: input.id,
-          kindeUserId: userId,
+          kindeId: userId,
         },
       });
 
@@ -92,7 +92,7 @@ export const appRouter = router({
       const file = await db.file.findFirst({
         where: {
           id: input.fileID,
-          kindeUserId: ctx.userId,
+          kindeId: ctx.userId,
         },
       });
 
