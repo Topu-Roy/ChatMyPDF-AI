@@ -52,7 +52,7 @@ model Message {
   createdAt     DateTime @default(now())
 
   User    User?   @relation(fields: [kindeId], references: [kindeId])
-  kindeId String  @unique
+  kindeId String
   File    File?   @relation(fields: [fileId], references: [id])
   fileId  String? @db.ObjectId
 }
