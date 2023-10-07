@@ -1,6 +1,9 @@
 import { db } from "@/db";
+import { pinecone } from "@/lib/pinecone";
 import { SendMessageValidator } from "@/lib/validator/sendMessageValidator";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { OpenAIEmbeddings } from "langchain/embeddings/openai";
+import { PineconeStore } from "langchain/vectorstores/pinecone";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -33,5 +36,28 @@ export async function POST(req: NextRequest) {
       userId: user.id,
       fileId: fileId,
     },
+  });
+
+  //* Vectorize the messages
+  const embeddings = new OpenAIEmbeddings({
+    openAIApiKey: process.env.OPEN_AI_API_KEY,
+  });
+
+  const pineconeIndex = pinecone.Index("chatmypdf");
+  const vectorStore = await PineconeStore.fromExistingIndex(embeddings, {
+    pineconeIndex,
+    namespace: file?.id,
+  });
+
+  const result = await vectorStore.similaritySearch(message, 4);
+
+  const prevMessage = await db.message.findMany({
+    where: {
+      fileId,
+    },
+    orderBy: {
+      createdAt: "asc",
+    },
+    take: 6,
   });
 }
