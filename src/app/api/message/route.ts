@@ -1,4 +1,5 @@
 import { db } from "@/db";
+import { openai } from "@/lib/openai";
 import { pinecone } from "@/lib/pinecone";
 import { SendMessageValidator } from "@/lib/validator/sendMessageValidator";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
@@ -49,8 +50,10 @@ export async function POST(req: NextRequest) {
     namespace: file?.id,
   });
 
+  //* Getting the similarities between the pdf and messages vector
   const result = await vectorStore.similaritySearch(message, 4);
 
+  //* Getting history and formatting them
   const prevMessage = await db.message.findMany({
     where: {
       fileId,
@@ -59,5 +62,17 @@ export async function POST(req: NextRequest) {
       createdAt: "asc",
     },
     take: 6,
+  });
+
+  const formattedPreviousMessages = prevMessage.map((msg) => ({
+    role: msg.isUserMessage ? "user" : "assistant",
+    content: msg.text,
+  }));
+
+  const response = await openai.chat.completions.create({
+    model: "gpt-3.5-turbo",
+    temperature: 0,
+    stream: true,
+    messages: [],
   });
 }
