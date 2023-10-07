@@ -46,7 +46,7 @@ export const ourFileRouter = {
         const amountOfPages = pdfPageData.length;
 
         //* Vectorized and index the pdf in PineconeDB
-        const pineconeIndex = pinecone.Index("chat-my-pdf");
+        const pineconeIndex = pinecone.Index("chatmypdf");
         const embeddings = new OpenAIEmbeddings({
           openAIApiKey: process.env.OPEN_AI_API_KEY,
         });
