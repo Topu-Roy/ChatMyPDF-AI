@@ -10,7 +10,7 @@ import { OpenAIStream, StreamingTextResponse } from "ai";
 
 export async function POST(req: NextRequest) {
   // * Get the body
-  const body = req.json();
+  const body = await req.json();
   if (!body) return NextResponse.json("Body is required", { status: 401 });
 
   // * Check if the user is authenticated
