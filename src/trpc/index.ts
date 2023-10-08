@@ -3,6 +3,7 @@ import { router, publicProcedure, privateProcedure } from "./trpc";
 import { TRPCError } from "@trpc/server";
 import { db } from "@/db";
 import { z } from "zod";
+import { INFINITE_QUERY_DEFAULT_LIMIT } from "@/lib/constConfig/infinite-query";
 
 export const appRouter = router({
   authCallback: publicProcedure.query(async () => {
@@ -99,6 +100,46 @@ export const appRouter = router({
       if (!file) return { status: "PENDING" as const };
 
       return { status: file.uploadStatus };
+    }),
+
+  getFileMessages: privateProcedure
+    .input(
+      z.object({
+        limit: z.number().min(1).max(100).nullish(), //* Nullish means optional
+        fileId: z.string(),
+        cursor: z.number().nullish(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const { user, userId } = ctx;
+      const { fileId, cursor } = input;
+      const limit = input.limit ?? INFINITE_QUERY_DEFAULT_LIMIT;
+
+      const file = await db.file.findFirst({
+        where: {
+          id: fileId,
+          kindeId: userId,
+        },
+      });
+
+      const messages = await db.message.findMany({
+        take: limit + 1,
+        where: {
+          fileId,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+        //* It's for identify the last message
+        //* and fetch the next messages based on the last message
+        cursor: cursor ? { id: cursor.toString() } : undefined,
+        select: {
+          id: true,
+          isUserMessage: true,
+          createdAt: true,
+          text: true,
+        },
+      });
     }),
 });
 

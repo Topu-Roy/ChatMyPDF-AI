@@ -1,0 +1,1 @@
+export const INFINITE_QUERY_DEFAULT_LIMIT = 10;
