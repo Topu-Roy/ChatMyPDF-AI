@@ -140,6 +140,17 @@ export const appRouter = router({
           text: true,
         },
       });
+
+      let nextCursor: typeof cursor | string = undefined;
+      if (messages.length > limit) {
+        const nextItem = messages.pop();
+        nextCursor = nextItem?.id.toString();
+      }
+
+      return {
+        messages,
+        nextCursor,
+      };
     }),
 });
 
