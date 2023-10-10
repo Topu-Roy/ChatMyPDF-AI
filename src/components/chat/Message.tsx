@@ -20,13 +20,22 @@ function Message({ message, isNextMessageFromSamePerson }: Props) {
                     invisible: isNextMessageFromSamePerson
                 })}
             >
-                {
-                    message.isUserMessage ? (
-                        <Icons.user className='fill-zinc-200 text-zinc-200 h-3/4 w-3/4' />
-                    ) : (
-                        <Icons.logo className='fill-zinc-200 text-zinc-200 h-3/4 w-3/4' />
-                    )
-                }
+                {message.isUserMessage ? (
+                    <Icons.user className='fill-zinc-200 text-zinc-200 h-3/4 w-3/4' />
+                ) : (
+                    <Icons.logo className='fill-zinc-200 text-zinc-200 h-3/4 w-3/4' />
+                )}
+            </div>
+
+            <div
+                className={cn('px-4 py-2 rounded-lg inline-block', {
+                    'bg-blue-600 text-white': message.isUserMessage,
+                    'bg-gray-200 text-gray-900': !message.isUserMessage,
+                    'rounded-br-none': isNextMessageFromSamePerson && message.isUserMessage,
+                    'rounded-bl-none': isNextMessageFromSamePerson && !message.isUserMessage,
+                })}
+            >
+                { }
             </div>
         </div>
     )
