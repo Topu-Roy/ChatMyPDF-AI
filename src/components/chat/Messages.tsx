@@ -39,7 +39,7 @@ function Messages({ fileId }: Props) {
     //* Into the message array
     const messagesWithLoadingState = [
         ...(true ? [loadingMessage] : []),
-        ...(messages ? [messages] : []),
+        ...(messages ?? []),
     ]
 
     return (
@@ -47,10 +47,13 @@ function Messages({ fileId }: Props) {
             {
                 messagesWithLoadingState && messagesWithLoadingState.length > 0 ? (
                     messagesWithLoadingState.map((message, i) => {
+
+                        const isNextMessageFromSameUser = messagesWithLoadingState[i - 1]?.isUserMessage === messagesWithLoadingState[i]?.isUserMessage
+
                         if (i === messagesWithLoadingState.length - 1) {
-                            return <Message />
+                            return <Message message={ } isMessageSamePerson={isNextMessageFromSameUser} />
                         } else {
-                            return <Message />
+                            return <Message message={ } isMessageSamePerson={isNextMessageFromSameUser} />
                         }
                     })
                 ) : isLoading ? (
