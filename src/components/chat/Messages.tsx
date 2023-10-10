@@ -51,9 +51,9 @@ function Messages({ fileId }: Props) {
                         const isNextMessageFromSameUser = messagesWithLoadingState[i - 1]?.isUserMessage === messagesWithLoadingState[i]?.isUserMessage
 
                         if (i === messagesWithLoadingState.length - 1) {
-                            return <Message message={ } isMessageSamePerson={isNextMessageFromSameUser} />
+                            return <Message message={message} isMessageSamePerson={isNextMessageFromSameUser} />
                         } else {
-                            return <Message message={ } isMessageSamePerson={isNextMessageFromSameUser} />
+                            return <Message message={message} isMessageSamePerson={isNextMessageFromSameUser} />
                         }
                     })
                 ) : isLoading ? (
