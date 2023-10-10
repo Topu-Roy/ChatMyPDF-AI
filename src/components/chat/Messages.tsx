@@ -1,7 +1,9 @@
 import { trpc } from '@/app/_trpc/client'
 import { INFINITE_QUERY_DEFAULT_LIMIT } from '@/lib/constConfig/infinite-query'
-import { Loader2 } from 'lucide-react'
+import { Loader2, MessageSquare } from 'lucide-react'
 import React from 'react'
+import Message from './Message'
+import { Skeleton } from '../ui/skeleton'
 
 type Props = {
     fileId: string
@@ -37,14 +39,39 @@ function Messages({ fileId }: Props) {
     //* Into the message array
     const messagesWithLoadingState = [
         ...(true ? [loadingMessage] : []),
-        ...(data ? [messages] : []),
+        ...(messages ? [messages] : []),
     ]
 
     return (
         <div className='flex flex-1 max-h-[calc(100vh-3.5rem-7rem)] border-zinc-200 flex-col-reverse gap-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch'>
-            <div className="">
-
-            </div>
+            {
+                messagesWithLoadingState && messagesWithLoadingState.length > 0 ? (
+                    messagesWithLoadingState.map((message, i) => {
+                        if (i === messagesWithLoadingState.length - 1) {
+                            return <Message />
+                        } else {
+                            return <Message />
+                        }
+                    })
+                ) : isLoading ? (
+                    <div className='w-full flex flex-col gap-2'>
+                        <Skeleton className='h-16' />
+                        <Skeleton className='h-16' />
+                        <Skeleton className='h-16' />
+                        <Skeleton className='h-16' />
+                    </div>) :
+                    (
+                        <div className='flex-1 flex flex-col items-center justify-center gap-2'>
+                            <MessageSquare className='h-8 w-8 text-blue-500' />
+                            <h3 className="font-semibold text-xl">
+                                You&apos;re all set!!
+                            </h3>
+                            <p className="text-zinc-500 text-sm">
+                                Ask any question about this PDF
+                            </p>
+                        </div>
+                    )
+            }
         </div>
     )
 }
