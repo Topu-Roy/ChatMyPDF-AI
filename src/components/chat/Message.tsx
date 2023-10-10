@@ -2,6 +2,8 @@ import { cn } from '@/lib/utils'
 import { MessageType } from '@/types/message'
 import React from 'react'
 import { Icons } from '../MyIcons'
+import ReactMarkdown from 'react-markdown'
+import { format } from 'date-fns'
 
 type Props = {
     message: MessageType,
@@ -35,7 +37,30 @@ function Message({ message, isNextMessageFromSamePerson }: Props) {
                     'rounded-bl-none': isNextMessageFromSamePerson && !message.isUserMessage,
                 })}
             >
-                { }
+
+                {message.text === 'string' ? (
+                    <ReactMarkdown
+                        className={cn('prose', {
+                            'text-zinc-50': message.isUserMessage
+                        })}
+                    >
+                        {message.text}
+                    </ReactMarkdown>
+                ) : (
+                    message.text
+                )}
+
+                {message.id !== 'loading-message' ? (
+                    <div className={cn('text-xs select-none mt-2 w-full text-right', {
+                        'text-zinc-500': !message.isUserMessage,
+                        'text-blue-300': message.isUserMessage,
+
+                    })}
+                    >
+                        {format(new Date(message.createdAt), 'HH:mm')}
+                    </div>
+                ) : null}
+
             </div>
         </div>
     )
