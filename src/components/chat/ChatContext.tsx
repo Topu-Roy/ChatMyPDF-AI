@@ -113,6 +113,12 @@ export const ChatContextProvider = ({ fileId, children }: ChatContextProviderPro
                 variant: 'destructive'
             })
         },
+        onSettled: async () => {
+            setIsLoading(false);
+
+            //* Validate and make sure all messages are same as in database
+            await utils.getFileMessages.invalidate({ fileId })
+        }
     })
 
     const addMessage = () => {
