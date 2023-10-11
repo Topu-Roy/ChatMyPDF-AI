@@ -107,7 +107,7 @@ export const appRouter = router({
       z.object({
         limit: z.number().min(1).max(100).nullish(), //* Nullish means optional
         fileId: z.string(),
-        cursor: z.number().nullish(),
+        cursor: z.string().nullish(),
       })
     )
     .query(async ({ ctx, input }) => {
@@ -132,7 +132,7 @@ export const appRouter = router({
         },
         //* It's for identify the last message
         //* and fetch the next messages based on the last message
-        cursor: cursor ? { id: cursor.toString() } : undefined,
+        cursor: cursor ? { id: cursor } : undefined,
         select: {
           id: true,
           isUserMessage: true,
