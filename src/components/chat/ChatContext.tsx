@@ -24,7 +24,7 @@ export const ChatContext = createContext<ChatContextTypes>({
 })
 
 export const ChatContextProvider = ({ fileId, children }: ChatContextProviderProps) => {
-    const [message, SetMessage] = useState('')
+    const [message, setMessage] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const { toast } = useToast()
 
@@ -48,7 +48,7 @@ export const ChatContextProvider = ({ fileId, children }: ChatContextProviderPro
         onMutate: async ({ message }) => {
             //* Backup old message and rollback if anythings bad happened
             backupMessage.current = message;
-            SetMessage('')
+            setMessage('')
 
             //* Cancel out any other requests made to getFileMessages 
             await utils.getFileMessages.cancel()
@@ -97,14 +97,29 @@ export const ChatContextProvider = ({ fileId, children }: ChatContextProviderPro
             return {
                 prevMessages: prevMessages?.pages.flatMap((page) => page.messages) ?? [],
             }
-        }
+        },
+        onError: (_, __, context) => {
+            //* Rollback to the last message
+            setMessage(backupMessage.current)
+
+            utils.getFileMessages.setData(
+                { fileId },
+                { messages: context?.prevMessages ?? [] }
+            )
+
+            toast({
+                title: 'Something went wrong',
+                description: 'Please try to refresh the page or try again',
+                variant: 'destructive'
+            })
+        },
     })
 
     const addMessage = () => {
         sendMessage({ message });
     }
     const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        SetMessage(e.target.value)
+        setMessage(e.target.value)
     }
 
     return (
