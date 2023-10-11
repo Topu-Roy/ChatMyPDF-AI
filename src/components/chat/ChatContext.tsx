@@ -2,6 +2,7 @@ import { ReactNode, createContext, useRef, useState } from "react";
 import { useToast } from "../ui/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { trpc } from "@/app/_trpc/client";
+import { INFINITE_QUERY_DEFAULT_LIMIT } from "@/lib/constConfig/infinite-query";
 
 type ChatContextTypes = {
     addMessage: () => void,
@@ -24,7 +25,7 @@ export const ChatContext = createContext<ChatContextTypes>({
 
 export const ChatContextProvider = ({ fileId, children }: ChatContextProviderProps) => {
     const [message, SetMessage] = useState('')
-    const [isLoading, SetIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
     const { toast } = useToast()
 
     const utils = trpc.useContext()
@@ -44,9 +45,58 @@ export const ChatContextProvider = ({ fileId, children }: ChatContextProviderPro
 
             return res.body
         },
-        onMutate: async () => {
-            backupMessage.current = message,
-                SetMessage('')
+        onMutate: async ({ message }) => {
+            //* Backup old message and rollback if anythings bad happened
+            backupMessage.current = message;
+            SetMessage('')
+
+            //* Cancel out any other requests made to getFileMessages 
+            await utils.getFileMessages.cancel()
+
+            //* Get copy of the message
+            const prevMessages = utils.getFileMessages.getInfiniteData()
+
+            //* Add new messages into the copy of the messages
+            utils.getFileMessages.setInfiniteData(
+                { fileId, limit: INFINITE_QUERY_DEFAULT_LIMIT },
+                (oldData) => {
+                    if (!oldData) {
+                        return {
+                            pages: [],
+                            pageParams: [],
+                        }
+                    }
+
+                    let newPages = [...oldData.pages]
+                    let latestPage = newPages[0]
+
+                    //* Insert new message into the latest page
+                    latestPage.messages = [
+                        {
+                            id: crypto.randomUUID().toString(),
+                            text: message,
+                            createdAt: new Date().toISOString(),
+                            isUserMessage: true,
+                        },
+                        ...latestPage.messages
+                    ]
+
+                    //* Inset the page into the whole array that contains all the pages
+                    newPages[0] = latestPage
+
+                    return {
+                        ...oldData,
+                        pages: newPages
+                    }
+                }
+            )
+
+            //* After inserting the message show the loading states
+            setIsLoading(true)
+
+            return {
+                prevMessages: prevMessages?.pages.flatMap((page) => page.messages) ?? [],
+            }
         }
     })
 
