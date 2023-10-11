@@ -1,10 +1,11 @@
 import { trpc } from "@/app/_trpc/client";
 import { INFINITE_QUERY_DEFAULT_LIMIT } from "@/lib/constConfig/infinite-query";
 import { Loader2, MessageSquare } from "lucide-react";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import Message from "./Message";
 import { Skeleton } from "../ui/skeleton";
 import { ChatContext } from "./ChatContext";
+import { useIntersection } from '@mantine/hooks'
 
 type Props = {
     fileId: string;
@@ -14,7 +15,7 @@ function Messages({ fileId }: Props) {
 
     const { isLoading: isAiLoading } = useContext(ChatContext)
 
-    const { data, isLoading } = trpc.getFileMessages.useInfiniteQuery(
+    const { data, isLoading, fetchNextPage } = trpc.getFileMessages.useInfiniteQuery(
         {
             fileId,
             limit: INFINITE_QUERY_DEFAULT_LIMIT,
@@ -47,6 +48,18 @@ function Messages({ fileId }: Props) {
         ...(messages ?? []),
     ];
 
+    //* This is for the infinite queries when scrolling up
+    const lastMessageRef = useRef<HTMLDivElement>(null)
+    const { entry, ref } = useIntersection({
+        root: lastMessageRef.current,
+        threshold: 1
+    })
+
+    useEffect(() => {
+        //* fetch if the message at the top is visible
+        if (entry?.isIntersecting) { fetchNextPage() }
+    }, [entry, fetchNextPage])
+
     return (
         <div className="flex flex-1 max-h-[calc(100vh-3.5rem-7rem)] border-zinc-200 flex-col-reverse gap-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
             {messagesWithLoadingState && messagesWithLoadingState.length > 0 ? (
@@ -58,6 +71,7 @@ function Messages({ fileId }: Props) {
                     if (i === messagesWithLoadingState.length - 1) {
                         return (
                             <Message
+                                ref={ref}
                                 message={message}
                                 isNextMessageFromSamePerson={isNextMessageFromSamePerson}
                                 key={message.id}
