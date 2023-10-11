@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils'
 import { MessageType } from '@/types/message'
-import React from 'react'
+import { forwardRef } from 'react'
 import { Icons } from '../MyIcons'
 import ReactMarkdown from 'react-markdown'
 import { format } from 'date-fns'
@@ -10,11 +10,14 @@ type Props = {
     isNextMessageFromSamePerson: boolean
 }
 
-function Message({ message, isNextMessageFromSamePerson }: Props) {
+const Message = forwardRef<HTMLDivElement, Props>(({ message, isNextMessageFromSamePerson }, ref) => {
     return (
-        <div className={cn('flex items-end gap-1.5', {
-            'justify-end': message.isUserMessage
-        })}>
+        <div
+            ref={ref}
+            className={cn('flex items-end gap-1.5', {
+                'justify-end': message.isUserMessage
+            })}
+        >
             <div
                 className={cn('relative flex h-6 w-6 aspect-square items-center justify-center rounded-sm', {
                     'order-2 bg-blue-600': message.isUserMessage,
@@ -64,6 +67,6 @@ function Message({ message, isNextMessageFromSamePerson }: Props) {
             </div>
         </div>
     )
-}
+})
 
 export default Message;
