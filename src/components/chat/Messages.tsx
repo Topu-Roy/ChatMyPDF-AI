@@ -1,15 +1,19 @@
 import { trpc } from "@/app/_trpc/client";
 import { INFINITE_QUERY_DEFAULT_LIMIT } from "@/lib/constConfig/infinite-query";
 import { Loader2, MessageSquare } from "lucide-react";
-import React from "react";
+import React, { useContext } from "react";
 import Message from "./Message";
 import { Skeleton } from "../ui/skeleton";
+import { ChatContext } from "./ChatContext";
 
 type Props = {
     fileId: string;
 };
 
 function Messages({ fileId }: Props) {
+
+    const { isLoading: isAiLoading } = useContext(ChatContext)
+
     const { data, isLoading } = trpc.getFileMessages.useInfiniteQuery(
         {
             fileId,
@@ -39,7 +43,7 @@ function Messages({ fileId }: Props) {
     //* Insert the loading indicator if necessary
     //* Into the message array
     const messagesWithLoadingState = [
-        ...(true ? [loadingMessage] : []),
+        ...(isAiLoading ? [loadingMessage] : []),
         ...(messages ?? []),
     ];
 
