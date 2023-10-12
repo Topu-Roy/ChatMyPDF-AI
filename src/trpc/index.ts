@@ -177,6 +177,8 @@ export const appRouter = router({
         return_url: billingURL,
       });
 
+      console.log(billingURL);
+
       return { url: stripeSession.url };
     }
 
@@ -196,6 +198,7 @@ export const appRouter = router({
       },
     });
 
+    console.log(billingURL);
     return { url: stripeSession.url };
   }),
 });
