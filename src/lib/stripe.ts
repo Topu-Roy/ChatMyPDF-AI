@@ -23,7 +23,7 @@ export async function getUserSubscriptionPlan() {
 
   const dbUser = await db.user.findFirst({
     where: {
-      id: user.id,
+      kindeId: user.id,
     },
   });
 
