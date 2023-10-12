@@ -17,7 +17,7 @@ model User {
   Message Message[]
 
   stripeCustomerId       String? @unique @map("stripe_customer_id")
-  stripeSubscribtionId   String? @unique @map("stripe_subscription_id")
+  stripeSubscriptionId   String? @unique @map("stripe_subscription_id")
   stripePriceId          String? @unique @map("stripe_price_id")
   stripeCurrentPeriodEnd String? @unique @map("stripe_current_period_end")
 }
