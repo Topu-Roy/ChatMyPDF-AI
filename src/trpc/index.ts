@@ -152,6 +152,10 @@ export const appRouter = router({
         nextCursor,
       };
     }),
+
+  createStripeSession: privateProcedure.mutation(({ ctx }) => {
+    const { user, userId } = ctx;
+  }),
 });
 
 export type AppRouter = typeof appRouter;
