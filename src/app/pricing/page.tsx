@@ -5,7 +5,10 @@ import React from 'react'
 import { pricingItems } from './pricingOptions'
 import { PLANS } from '@/lib/constConfig/stripe'
 import { cn } from '@/lib/utils'
-import { Check, HelpCircle, Minus } from 'lucide-react'
+import { ArrowRight, Check, HelpCircle, Minus } from 'lucide-react'
+import Link from 'next/link'
+import { buttonVariants } from '@/components/ui/button'
+import UpgradeButton from '@/components/UpgradeButton'
 
 type Props = {}
 
@@ -115,6 +118,33 @@ function PricingPage({ }: Props) {
                                                 )}
                                             </li>
                                         ))}
+
+                                        <div className='border-t border-gray-200' />
+                                        <div className="p-5">
+                                            {plan === 'Free' ? (
+                                                <Link
+                                                    href={user ? '/dashboard' : '/sign-in'}
+                                                    className={buttonVariants({
+                                                        className: 'w-full',
+                                                    })}
+                                                >
+                                                    {user ? 'Dashboard' : 'Get started for free'}
+                                                    <ArrowRight className='h-5 w-5 ml-1.5' />
+                                                </Link>
+                                            ) : user ? (
+                                                <UpgradeButton />
+                                            ) : (
+                                                <Link
+                                                    href={'/sign-in'}
+                                                    className={buttonVariants({
+                                                        className: 'w-full bg-blue-500',
+                                                    })}
+                                                >
+                                                    Continue
+                                                    <ArrowRight className='h-5 w-5 ml-1.5' />
+                                                </Link>
+                                            )}
+                                        </div>
                                     </ul>
                                 </div>
                             )
