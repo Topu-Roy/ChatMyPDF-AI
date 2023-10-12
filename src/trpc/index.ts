@@ -4,6 +4,7 @@ import { TRPCError } from "@trpc/server";
 import { db } from "@/db";
 import { z } from "zod";
 import { INFINITE_QUERY_DEFAULT_LIMIT } from "@/lib/constConfig/infinite-query";
+import { absoluteURL } from "@/lib/utils";
 
 export const appRouter = router({
   authCallback: publicProcedure.query(async () => {
@@ -153,8 +154,19 @@ export const appRouter = router({
       };
     }),
 
-  createStripeSession: privateProcedure.mutation(({ ctx }) => {
+  createStripeSession: privateProcedure.mutation(async ({ ctx }) => {
     const { user, userId } = ctx;
+    const billingURL = absoluteURL("/dashboard/billing");
+
+    if (!user) throw new TRPCError({ code: "UNAUTHORIZED" });
+
+    const dbUser = await db.user.findFirst({
+      where: {
+        kindeId: userId,
+      },
+    });
+
+    if (!dbUser) throw new TRPCError({ code: "UNAUTHORIZED" });
   }),
 });
 
