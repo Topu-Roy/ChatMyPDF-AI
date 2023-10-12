@@ -79,7 +79,7 @@ function PricingPage({ }: Props) {
 
                                     <ul className="my-10 space-y-5 px-8">
                                         {features.map(({ text, footnote, negative }) => (
-                                            <li className="flex space-x-5">
+                                            <li key={text} className="flex space-x-5">
                                                 <div className="flex-shrink-0">
                                                     {negative ? (
                                                         <Minus className='h-6 w-6 text-gray-300' />
