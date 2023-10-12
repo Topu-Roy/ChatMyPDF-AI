@@ -6,7 +6,7 @@ type Props = {}
 
 function UpgradeButton({ }: Props) {
     return (
-        <Button className='w-full'>
+        <Button className='w-full bg-blue-600'>
             Upgrade now
             <ArrowRight className='h-5 w-5 ml-1.5' />
         </Button>
