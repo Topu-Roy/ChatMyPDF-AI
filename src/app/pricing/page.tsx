@@ -1,4 +1,5 @@
 import MaxWidthWrapper from '@/components/MaxWidthWrapper'
+import { TooltipProvider } from '@/components/ui/tooltip'
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
 import React from 'react'
 
@@ -20,6 +21,12 @@ function PricingPage({ }: Props) {
                         Whether you&apos;re just trying out our service or
                         need more, we&apos;ve got you covered.
                     </p>
+                </div>
+
+                <div className="pt-12 grid grid-cols-1 gap-10 lg:grid-cols-2">
+                    <TooltipProvider>
+
+                    </TooltipProvider>
                 </div>
             </MaxWidthWrapper>
         </>
