@@ -12,7 +12,6 @@ import { format } from 'date-fns';
 
 function BillingForm({ subscriptionPlan }: SubscriptionPlanType) {
     const { toast } = useToast()
-    const subscriptionPlanEndDate = new Date(subscriptionPlan.stripeCurrentPeriodEnd!)
 
     const { mutate: createStripeSession, isLoading } = trpc.createStripeSession.useMutation({
         onSuccess: ({ url }) => {
@@ -60,7 +59,7 @@ function BillingForm({ subscriptionPlan }: SubscriptionPlanType) {
                                 }
                             </p>
                         ) : null}
-                        {format(subscriptionPlanEndDate, 'dd.mm.yyyy')}
+                        {format(new Date(subscriptionPlan.stripeCurrentPeriodEnd!), 'dd.mm.yyyy')}
                     </CardFooter>
                 </Card>
             </form>
