@@ -1,10 +1,16 @@
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { RegisterLink, getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {
+
+  const { getUser } = getKindeServerSession()
+  const user = getUser()
+
   return (
     <>
       <MaxWidthWrapper className="mb-12 mt-28 sm:mt-40 flex flex-col justify-center items-center text-center">
@@ -24,17 +30,31 @@ export default function Home() {
           start asking and get answers based on the PDF uploaded.
         </p>
 
-        <Link
-          href={"/dashboard"}
-          target="_blank"
-          className={buttonVariants({
-            size: "lg",
-            className: "mt-5 h-14",
-          })}
-        >
-          Get started for free
-          <ArrowRight className="ml-2 h-5 w-5" />
-        </Link>
+        {user ? (
+          <Link
+            href={"/dashboard"}
+            target="_blank"
+            className={buttonVariants({
+              size: "lg",
+              className: "mt-5 h-14",
+            })}
+          >
+            <span>Dashboard</span>
+            <ArrowRight className="ml-2 h-5 w-5" />
+          </Link>
+        ) : (
+          <RegisterLink
+            className={cn(
+              buttonVariants({
+                size: "sm",
+              }),
+              "text-center py-5"
+            )}
+          >
+            Start for free
+          </RegisterLink>
+        )}
+
       </MaxWidthWrapper>
 
       {/* Product Image */}
