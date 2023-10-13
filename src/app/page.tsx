@@ -33,7 +33,6 @@ export default function Home() {
         {user ? (
           <Link
             href={"/dashboard"}
-            target="_blank"
             className={buttonVariants({
               size: "lg",
               className: "mt-5 h-14",
@@ -44,14 +43,13 @@ export default function Home() {
           </Link>
         ) : (
           <RegisterLink
-            className={cn(
-              buttonVariants({
-                size: "sm",
-              }),
-              "text-center py-5"
-            )}
+            className={buttonVariants({
+              size: "lg",
+              className: "mt-5 h-14",
+            })}
           >
-            Start for free
+            <span>Try It For Free</span>
+            <ArrowRight className="ml-2 h-5 w-5" />
           </RegisterLink>
         )}
 
