@@ -4,6 +4,7 @@ import Link from "next/link";
 import { buttonVariants } from "./ui/button";
 import { LoginLink, LogoutLink, RegisterLink, getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { cn } from "@/lib/utils";
+import NavUserMenuIcon from "./NavUserLoginOptions";
 
 export default function Navbar() {
 
@@ -59,14 +60,24 @@ export default function Navbar() {
                                     </RegisterLink>
                                 </>
                             ) : (
-                                <LogoutLink
-                                    className={cn(
-                                        buttonVariants({
-                                            size: "sm",
-                                        }),
-                                        "text-center py-5"
-                                    )}
-                                >Log out</LogoutLink>
+                                <>
+
+                                    <NavUserMenuIcon
+                                        email={user.email ?? undefined}
+                                        imageUrl={user.picture ?? ''}
+                                        name={user.family_name && user.given_name ? `${user.given_name} ${user.family_name}` : 'account'}
+                                    />
+                                    <LogoutLink
+                                        className={cn(
+                                            buttonVariants({
+                                                size: "sm",
+                                            }),
+                                            "text-center py-5"
+                                        )}
+                                    >
+                                        Log out
+                                    </LogoutLink>
+                                </>
                             )}
                         </>
                     </div>
