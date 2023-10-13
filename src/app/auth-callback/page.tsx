@@ -14,12 +14,8 @@ export default function AuthCallback() {
             if (success) router.replace(origin ? `/${origin}` : '/dashboard')
         },
         onError: ({ data }) => {
-            if (data?.code === "UNAUTHORIZED") {
-                router.replace('/sign-in')
-            }
-        },
-        retry: true,
-        retryDelay: 500
+            if (data?.code === "UNAUTHORIZED") router.push('/sign-in')
+        }
     })
 
     return (
