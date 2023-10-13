@@ -2,7 +2,7 @@ import React from "react";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import Link from "next/link";
 import { buttonVariants } from "./ui/button";
-import { LoginLink, LogoutLink, RegisterLink, getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { LoginLink, RegisterLink, getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { cn } from "@/lib/utils";
 import NavUserMenuIcon from "./NavUserLoginOptions";
 
@@ -61,22 +61,24 @@ export default function Navbar() {
                                 </>
                             ) : (
                                 <>
+                                    <Link
+                                        href={'/dashboard'}
+                                        className={cn(
+                                            buttonVariants({
+                                                variant: "ghost",
+                                                size: "sm",
+                                            }),
+                                            "text-base font-medium"
+                                        )}
+                                    >
+                                        dashboard
+                                    </Link>
 
                                     <NavUserMenuIcon
                                         email={user.email ?? undefined}
                                         imageUrl={user.picture ?? ''}
                                         name={user.family_name && user.given_name ? `${user.given_name} ${user.family_name}` : 'account'}
                                     />
-                                    <LogoutLink
-                                        className={cn(
-                                            buttonVariants({
-                                                size: "sm",
-                                            }),
-                                            "text-center py-5"
-                                        )}
-                                    >
-                                        Log out
-                                    </LogoutLink>
                                 </>
                             )}
                         </>
