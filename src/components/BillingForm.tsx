@@ -7,7 +7,7 @@ import { trpc } from '@/app/_trpc/client';
 import MaxWidthWrapper from './MaxWidthWrapper';
 import { Card, CardContent, CardFooter, CardTitle } from './ui/card';
 import { Button } from './ui/button';
-import { Loader, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { format } from 'date-fns';
 
 function BillingForm({ subscriptionPlan }: SubscriptionPlanType) {
