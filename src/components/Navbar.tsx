@@ -2,10 +2,14 @@ import React from "react";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import Link from "next/link";
 import { buttonVariants } from "./ui/button";
-import { LoginLink, RegisterLink } from "@kinde-oss/kinde-auth-nextjs/server";
+import { LoginLink, LogoutLink, RegisterLink, getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { cn } from "@/lib/utils";
 
 export default function Navbar() {
+
+    const { getUser } = getKindeServerSession()
+    const user = getUser();
+
     return (
         <nav className="sticky h-14 inset-x-0 top-0 z-30 w-full border-b border-gray-200 bg-white/75 backdrop-blur-lg transition-all">
             <MaxWidthWrapper className="h-full">
@@ -30,27 +34,40 @@ export default function Navbar() {
                             >
                                 <span>Pricing</span>
                             </Link>
-                            <LoginLink
-                                className={cn(
-                                    buttonVariants({
-                                        variant: "ghost",
-                                        size: "sm",
-                                    }),
-                                    "text-base font-medium"
-                                )}
-                            >
-                                Log in
-                            </LoginLink>
-                            <RegisterLink
-                                className={cn(
-                                    buttonVariants({
-                                        size: "sm",
-                                    }),
-                                    "text-center py-5"
-                                )}
-                            >
-                                Start for free
-                            </RegisterLink>
+                            {!user ? (
+                                <>
+                                    <LoginLink
+                                        className={cn(
+                                            buttonVariants({
+                                                variant: "ghost",
+                                                size: "sm",
+                                            }),
+                                            "text-base font-medium"
+                                        )}
+                                    >
+                                        Log in
+                                    </LoginLink>
+                                    <RegisterLink
+                                        className={cn(
+                                            buttonVariants({
+                                                size: "sm",
+                                            }),
+                                            "text-center py-5"
+                                        )}
+                                    >
+                                        Start for free
+                                    </RegisterLink>
+                                </>
+                            ) : (
+                                <LogoutLink
+                                    className={cn(
+                                        buttonVariants({
+                                            size: "sm",
+                                        }),
+                                        "text-center py-5"
+                                    )}
+                                >Log out</LogoutLink>
+                            )}
                         </>
                     </div>
                 </div>
