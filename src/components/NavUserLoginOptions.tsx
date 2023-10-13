@@ -4,9 +4,10 @@ import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import { Button } from './ui/button'
 import { Gem, UserIcon } from 'lucide-react'
 import { LogoutLink } from '@kinde-oss/kinde-auth-nextjs/server'
-import { cn } from '@/lib/utils'
 import Link from 'next/link'
 import { getUserSubscriptionPlan } from '@/lib/stripe'
+import Image from 'next/image'
+import { Icons } from './MyIcons'
 
 type Props = {
     email: string | undefined
@@ -21,38 +22,40 @@ async function NavUserMenuIcon({ email, imageUrl, name }: Props) {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button>
+                <Button
+                    variant={'ghost'}
+                    className='rounded-full h-9 w-9'
+                >
                     <Avatar>
                         {imageUrl ? (
-                            <AvatarImage src={imageUrl} />
+                            <Image src={imageUrl} height={50} width={50} alt={name} />
                         ) : (
-                            <AvatarFallback>
+                            <AvatarFallback className='bg-slate-400/40'>
                                 <span className='sr-only'>
                                     {name ? name : "Profile"}
                                 </span>
+                                <Icons.user className='h-4 w-4 text-zinc-900' />
                             </AvatarFallback>
                         )}
                     </Avatar>
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-                <DropdownMenuItem>
-                    <div className="flex items-center justify-start gap-2 p-2">
-                        <div className="flex flex-col space-y-0.5 leading-none">
-                            {name ? (
-                                <p className='font-medium text-sm text-black'>
-                                    {name}
-                                </p>
-                            ) : null}
-                            {email ? (
-                                <p className='w-[200ox] truncate text-xs text-zinc-700'>
-                                    {email}
-                                </p>
-                            ) : null}
+                <div className="flex items-center justify-start gap-2 p-2">
+                    <div className="flex flex-col space-y-0.5 leading-none">
+                        {name ? (
+                            <p className='font-medium text-sm text-black'>
+                                {name}
+                            </p>
+                        ) : null}
+                        {email ? (
+                            <p className='w-[200ox] truncate text-xs text-zinc-700'>
+                                {email}
+                            </p>
+                        ) : null}
 
-                        </div>
                     </div>
-                </DropdownMenuItem>
+                </div>
 
                 <DropdownMenuSeparator />
 

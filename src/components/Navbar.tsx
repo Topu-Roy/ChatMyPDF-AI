@@ -22,78 +22,63 @@ export default function Navbar() {
                     {/* Todo: Mobile Navigation */}
 
                     <div className="hidden items-center space-x-4 sm:flex">
-                        <>
-                            <Link
-                                href={"/pricing"}
-                                className={cn(
-                                    buttonVariants({
-                                        variant: "ghost",
-                                        size: "sm",
-                                    }),
-                                    "text-base font-medium"
-                                )}
-                            >
-                                <span>Pricing</span>
-                            </Link>
-                            {!user ? (
-                                <>
-                                    <LoginLink
-                                        className={cn(
-                                            buttonVariants({
-                                                variant: "ghost",
-                                                size: "sm",
-                                            }),
-                                            "text-base font-medium"
-                                        )}
-                                    >
-                                        Log in
-                                    </LoginLink>
-                                    <RegisterLink
-                                        className={cn(
-                                            buttonVariants({
-                                                size: "sm",
-                                            }),
-                                            "text-center py-5"
-                                        )}
-                                    >
-                                        Start for free
-                                    </RegisterLink>
-                                </>
-                            ) : (
-                                <>
-                                    <Link
-                                        href={'/dashboard'}
-                                        className={cn(
-                                            buttonVariants({
-                                                variant: "ghost",
-                                                size: "sm",
-                                            }),
-                                            "text-base font-medium"
-                                        )}
-                                    >
-                                        dashboard
-                                    </Link>
-                                    <Link
-                                        href={'/pricing'}
-                                        className={cn(
-                                            buttonVariants({
-                                                variant: "ghost",
-                                                size: "sm",
-                                            }),
-                                            "text-base font-medium"
-                                        )}
-                                    >
-                                        pricing
-                                    </Link>
-
-                                    <NavUserMenuIcon
-                                        email={user.email ?? undefined}
-                                        imageUrl={user.picture ?? ''}
-                                        name={user.family_name && user.given_name ? `${user.given_name} ${user.family_name}` : 'account'}
-                                    />
-                                </>
-                            )}
-                        </>
+                        {!user ? (
+                            <>
+                                <Link
+                                    href={"/pricing"}
+                                    className={cn(
+                                        buttonVariants({
+                                            variant: "ghost",
+                                            size: "sm",
+                                        }),
+                                        "text-base font-medium"
+                                    )}
+                                >
+                                    <span>Pricing</span>
+                                </Link>
+                                <LoginLink
+                                    className={cn(
+                                        buttonVariants({
+                                            variant: "ghost",
+                                            size: "sm",
+                                        }),
+                                        "text-base font-medium"
+                                    )}
+                                >
+                                    Log in
+                                </LoginLink>
+                                <RegisterLink
+                                    className={cn(
+                                        buttonVariants({
+                                            size: "sm",
+                                        }),
+                                        "text-center py-5"
+                                    )}
+                                >
+                                    Start for free
+                                </RegisterLink>
+                            </>
+                        ) : (
+                            <>
+                                <Link
+                                    href={'/dashboard'}
+                                    className={cn(
+                                        buttonVariants({
+                                            variant: "ghost",
+                                            size: "sm",
+                                        }),
+                                        "text-base font-medium"
+                                    )}
+                                >
+                                    Dashboard
+                                </Link>
+                                <NavUserMenuIcon
+                                    email={user.email ?? undefined}
+                                    imageUrl={user.picture ?? ''}
+                                    name={user.family_name && user.given_name ? `${user.given_name} ${user.family_name}` : 'account'}
+                                />
+                            </>
+                        )}
                     </div>
                 </div>
             </MaxWidthWrapper>
