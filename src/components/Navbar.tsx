@@ -73,6 +73,18 @@ export default function Navbar() {
                                     >
                                         dashboard
                                     </Link>
+                                    <Link
+                                        href={'/pricing'}
+                                        className={cn(
+                                            buttonVariants({
+                                                variant: "ghost",
+                                                size: "sm",
+                                            }),
+                                            "text-base font-medium"
+                                        )}
+                                    >
+                                        pricing
+                                    </Link>
 
                                     <NavUserMenuIcon
                                         email={user.email ?? undefined}

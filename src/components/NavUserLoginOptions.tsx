@@ -33,4 +33,15 @@ function NavUserMenuIcon({ email, imageUrl, name }: Props) {
     )
 }
 
+{/* <LogoutLink
+                                        className={cn(
+                                            buttonVariants({
+                                                size: "sm",
+                                            }),
+                                            "text-center py-5"
+                                        )}
+                                    >
+                                        Log out
+                                    </LogoutLink> */}
+
 export default NavUserMenuIcon
