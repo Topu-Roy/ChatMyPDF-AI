@@ -76,7 +76,7 @@ export default function DashboardComponent() {
 
                                 <div className="flex items-center gap-2 truncate">
                                     <MessageSquare className="h-4 w-4 truncate" />
-                                    <p>{file.name}</p>
+                                    <p>{file.lastMessageSentByUser}</p>
                                 </div>
 
                                 <Button

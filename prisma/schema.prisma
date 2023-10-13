@@ -36,7 +36,8 @@ model File {
   url          String
   key          String
 
-  Message Message[]
+  Message               Message[]
+  lastMessageSentByUser String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())

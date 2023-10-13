@@ -9,7 +9,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { OpenAIStream, StreamingTextResponse } from "ai";
 
 export async function POST(req: NextRequest) {
-  // * Get the body
   const body = await req.json();
   if (!body) return NextResponse.json("Body is required", { status: 401 });
 
@@ -30,6 +29,15 @@ export async function POST(req: NextRequest) {
   });
 
   if (!file) NextResponse.json({ error: "Not Found" }, { status: 404 });
+
+  await db.file.update({
+    where: {
+      id: fileId,
+    },
+    data: {
+      lastMessageSentByUser: message,
+    },
+  });
 
   await db.message.create({
     data: {
