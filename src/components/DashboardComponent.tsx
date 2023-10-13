@@ -48,7 +48,6 @@ export default function DashboardComponent() {
         <main className="mx-auto max-w-7xl px-2 md:p-10">
             <div className="mt-8 flex flex-col items-start justify-between gap-4 border-b border-gray-200 pb-5 sm:flex-row sm:items-center sm:gap-0">
                 <h2 className="mb-3 font-black text-5xl text-gray-900">My Files</h2>
-
                 <UploadButton />
             </div>
 
@@ -75,9 +74,9 @@ export default function DashboardComponent() {
                                     {format(new Date(file.createdAt), "dd MMM, yyyy")}
                                 </div>
 
-                                <div className="flex items-center gap-2">
-                                    <MessageSquare className="h-4 w-4" />
-                                    <p>Mocked</p>
+                                <div className="flex items-center gap-2 truncate">
+                                    <MessageSquare className="h-4 w-4 truncate" />
+                                    <p>{file.name}</p>
                                 </div>
 
                                 <Button
