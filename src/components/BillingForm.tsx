@@ -59,7 +59,7 @@ function BillingForm({ subscriptionPlan }: SubscriptionPlanType) {
                                 }
                             </p>
                         ) : null}
-                        {format(new Date(subscriptionPlan.stripeCurrentPeriodEnd!), 'dd.mm.yyyy')}
+                        {format(subscriptionPlan.stripeCurrentPeriodEnd!, 'dd.mm.yyyy')}
                     </CardFooter>
                 </Card>
             </form>
