@@ -35,14 +35,16 @@ function BillingForm({ subscriptionPlan }: SubscriptionPlanType) {
     return (
         <MaxWidthWrapper className='max-w-5xl'>
             <form className='mt-12' onSubmit={handleSubmit}>
-                <Card>
-                    <CardTitle>Subscription Plan</CardTitle>
+                <Card className='py-4 px-8 space-y-4'>
                     <CardContent>
-                        You are currently on the {' '}
-                        <strong>{subscriptionPlan.name}</strong>
-                        plan.
+                        <h2 className="text-3xl font-bold">Subscription Plan</h2>
+                        <p className="">
+                            You are currently on the {' '}
+                            <strong>{subscriptionPlan.name}</strong>
+                            plan.
+                        </p>
                     </CardContent>
-                    <CardFooter className='flex flex-col items-start space-y-2 md:flex-row justify-between md:space-x-0' >
+                    <CardFooter className='flex items-start space-y-2 justify-between md:space-x-0' >
                         <Button type='submit'>
                             {isLoading ? (
                                 <Loader2 className='mr-4 h-4 w-4 animate-spin' />
@@ -59,7 +61,7 @@ function BillingForm({ subscriptionPlan }: SubscriptionPlanType) {
                                 }
                             </p>
                         ) : null}
-                        {format(subscriptionPlan.stripeCurrentPeriodEnd!, 'dd.mm.yyyy')}
+                        {format(new Date(subscriptionPlan.stripeCurrentPeriodEnd!), 'dd/mm/yyyy')}
                     </CardFooter>
                 </Card>
             </form>
