@@ -41,6 +41,7 @@ async function NavUserMenuIcon({ email, imageUrl, name }: Props) {
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
+
                 <div className="flex items-center justify-start gap-2 p-2">
                     <div className="flex flex-col space-y-0.5 leading-none">
                         {name ? (
@@ -59,7 +60,7 @@ async function NavUserMenuIcon({ email, imageUrl, name }: Props) {
 
                 <DropdownMenuSeparator />
 
-                <DropdownMenuItem asChild>
+                <DropdownMenuItem className='cursor-pointer' asChild>
                     <Link href={'/dashboard'}>
                         Dashboard
                     </Link>
@@ -67,7 +68,7 @@ async function NavUserMenuIcon({ email, imageUrl, name }: Props) {
 
                 <DropdownMenuSeparator />
 
-                <DropdownMenuItem asChild >
+                <DropdownMenuItem className='cursor-pointer' asChild >
                     {subscriptionPlan.isSubscribed ? (
                         <Link href={'/dashboard/billing'}>
                             Manage subscription
@@ -82,7 +83,7 @@ async function NavUserMenuIcon({ email, imageUrl, name }: Props) {
 
                 <DropdownMenuSeparator />
 
-                <DropdownMenuItem asChild>
+                <DropdownMenuItem className='cursor-pointer bg-rose-300' asChild>
                     <LogoutLink>
                         Log out
                     </LogoutLink>

@@ -5,7 +5,6 @@ import { buttonVariants } from "./ui/button";
 import { LoginLink, RegisterLink, getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { cn } from "@/lib/utils";
 import NavUserMenuIcon from "./NavUserLoginOptions";
-import NewNav from "./MobileNav";
 import MobileNav from "./MobileNav";
 
 export default function Navbar() {
