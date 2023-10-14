@@ -35,16 +35,16 @@ function BillingForm({ subscriptionPlan }: SubscriptionPlanType) {
     return (
         <MaxWidthWrapper className='max-w-5xl'>
             <form className='mt-12' onSubmit={handleSubmit}>
-                <Card className='py-4 px-8 space-y-4'>
+                <Card className='py-4 sm:px-8 space-y-4'>
                     <CardContent>
                         <h2 className="text-3xl font-bold">Subscription Plan</h2>
                         <p className="">
                             You are currently on the {' '}
-                            <strong>{subscriptionPlan.name}</strong>
+                            <strong className='mr-1.5'>{subscriptionPlan.name}</strong>
                             plan.
                         </p>
                     </CardContent>
-                    <CardFooter className='flex items-start space-y-2 justify-between md:space-x-0' >
+                    <CardFooter className='flex flex-col sm:flex-row items-start space-y-2 justify-between md:space-x-0' >
                         <Button type='submit'>
                             {isLoading ? (
                                 <Loader2 className='mr-4 h-4 w-4 animate-spin' />
@@ -56,12 +56,12 @@ function BillingForm({ subscriptionPlan }: SubscriptionPlanType) {
                             <p className='rounded-full text-sm font-medium'>
                                 {
                                     subscriptionPlan.isCanceled
-                                        ? "Your Subscription will be canceled on "
-                                        : "Your Subscription will be renewed on "
+                                        ? `Your Subscription will be canceled on `
+                                        : `Your Subscription will be renewed on `
                                 }
+                                <strong>{format(new Date(subscriptionPlan.stripeCurrentPeriodEnd!), 'dd/mm/yyyy')}</strong>
                             </p>
                         ) : null}
-                        {format(new Date(subscriptionPlan.stripeCurrentPeriodEnd!), 'dd/mm/yyyy')}
                     </CardFooter>
                 </Card>
             </form>
