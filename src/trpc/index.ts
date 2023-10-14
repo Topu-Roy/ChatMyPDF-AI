@@ -201,6 +201,11 @@ export const appRouter = router({
     console.log(billingURL);
     return { url: stripeSession.url };
   }),
+
+  getKindeUser: privateProcedure.query(({ ctx }) => {
+    const { user } = ctx;
+    return { user };
+  }),
 });
 
 export type AppRouter = typeof appRouter;

@@ -5,6 +5,7 @@ import { buttonVariants } from "./ui/button";
 import { LoginLink, RegisterLink, getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { cn } from "@/lib/utils";
 import NavUserMenuIcon from "./NavUserLoginOptions";
+import MobileNav from "./MobileNav";
 
 export default function Navbar() {
 
@@ -19,9 +20,7 @@ export default function Navbar() {
                         <span>ChatMyPDF.</span>
                     </Link>
 
-                    {/* Todo: Mobile Navigation */}
-
-                    <div className="hidden items-center space-x-4 sm:flex">
+                    <div className="items-center space-x-4 flex">
                         {!user ? (
                             <>
                                 <Link
@@ -31,7 +30,7 @@ export default function Navbar() {
                                             variant: "ghost",
                                             size: "sm",
                                         }),
-                                        "text-base font-medium"
+                                        "text-base font-medium hidden sm:flex"
                                     )}
                                 >
                                     <span>Pricing</span>
@@ -42,7 +41,7 @@ export default function Navbar() {
                                             variant: "ghost",
                                             size: "sm",
                                         }),
-                                        "text-base font-medium"
+                                        "text-base font-medium z-50"
                                     )}
                                 >
                                     Log in
@@ -52,11 +51,12 @@ export default function Navbar() {
                                         buttonVariants({
                                             size: "sm",
                                         }),
-                                        "text-center py-5"
+                                        "text-center py-5 hidden sm:flex"
                                     )}
                                 >
                                     Start for free
                                 </RegisterLink>
+                                <MobileNav />
                             </>
                         ) : (
                             <>
@@ -73,9 +73,9 @@ export default function Navbar() {
                                     Dashboard
                                 </Link>
                                 <NavUserMenuIcon
-                                    email={user.email ?? undefined}
-                                    imageUrl={user.picture ?? ''}
-                                    name={user.family_name && user.given_name ? `${user.given_name} ${user.family_name}` : 'account'}
+                                    email={user?.email ?? undefined}
+                                    imageUrl={user?.picture ?? ''}
+                                    name={user?.family_name && user?.given_name ? `${user?.given_name} ${user?.family_name}` : 'account'}
                                 />
                             </>
                         )}
