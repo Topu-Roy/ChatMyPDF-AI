@@ -9,7 +9,7 @@ generator client {
 
 model User {
   id      String  @id @default(auto()) @map("_id") @db.ObjectId
-  kindeId String  @unique @map("kinde_id")
+  kindeId String  @unique
   email   String  @unique
   name    String?
 
