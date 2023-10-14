@@ -38,7 +38,7 @@ export function generateMetadata({
     },
     twitter: {
       title,
-      creator: "",
+      creator: "@DevTopuroy",
       description,
       images: [image!],
       card: "summary_large_image",
