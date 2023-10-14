@@ -23,6 +23,7 @@ export default function Navbar() {
                     <div className="items-center space-x-4 flex">
                         {!user ? (
                             <>
+                                {/* Desktop */}
                                 <Link
                                     href={"/pricing"}
                                     className={cn(
@@ -35,6 +36,8 @@ export default function Navbar() {
                                 >
                                     <span>Pricing</span>
                                 </Link>
+
+                                {/* Mobile */}
                                 <LoginLink
                                     className={cn(
                                         buttonVariants({
@@ -46,6 +49,11 @@ export default function Navbar() {
                                 >
                                     Log in
                                 </LoginLink>
+
+                                {/* Hamburger Menu */}
+                                <MobileNav />
+
+                                {/* Desktop */}
                                 <RegisterLink
                                     className={cn(
                                         buttonVariants({
@@ -56,7 +64,6 @@ export default function Navbar() {
                                 >
                                     Start for free
                                 </RegisterLink>
-                                <MobileNav />
                             </>
                         ) : (
                             <>

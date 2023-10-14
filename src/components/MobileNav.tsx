@@ -32,7 +32,7 @@ export default function MobileNav() {
                     <ul className='absolute bg-white border-b border-zinc-200 shadow-md grid w-full gap-3 px-10 pt-20 pb-4'>
                         <>
                             <li className="">
-                                <Link href={'/sign-up'} className='flex items-center w-full font-semibold'>
+                                <Link href={'/api/auth/register'} className='flex items-center w-full font-semibold'>
                                     <span className=' text-green-700'>Get started</span>
                                     <ArrowRight className='ml-2 h-5 w-5 text-green-700' />
                                 </Link>
@@ -41,7 +41,7 @@ export default function MobileNav() {
                             <li className="my-3 h-px w-full bg-gray-300" />
 
                             <li className="">
-                                <Link href={'/sign-in'} className='flex items-center w-full font-semibold'>
+                                <Link href={'/api/auth/login'} className='flex items-center w-full font-semibold'>
                                     Sign in
                                 </Link>
                             </li>
