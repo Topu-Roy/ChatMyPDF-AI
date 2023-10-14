@@ -1,63 +1,42 @@
-'use client'
-
-import { ArrowRight, Menu, X } from 'lucide-react'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from './ui/dropdown-menu'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import { ArrowRight, Menu } from 'lucide-react'
+import { LoginLink, RegisterLink } from '@kinde-oss/kinde-auth-nextjs/server'
+import { Toggle } from './ui/toggle'
 
-export default function MobileNav() {
+type Props = {}
 
-    const [isOpen, setIsOpen] = useState(false)
-    const toggleOpen = () => setIsOpen(prev => !prev)
-
-    const pathName = usePathname();
-
-    //* close the mobile menu if the url changes
-    useEffect(() => {
-        if (isOpen) toggleOpen();
-    }, [pathName])
-
+function MobileNav({ }: Props) {
     return (
-        <div className='sm:hidden'>
-            <button onClick={toggleOpen} className='h-full w-full flex justify-center items-center'>
-                {isOpen ? (
-                    <X className='h-5 w-5 text-zinc-700 relative z-50' />
-                ) : (
+        <DropdownMenu>
+            <DropdownMenuTrigger className='focus-visible:ring-0 bg-slate-200' asChild>
+                <Toggle aria-label="Toggle italic" className='focus-visible:ring-0'>
                     <Menu className='h-5 w-5 text-zinc-700 relative z-50' />
-                )}
-            </button>
+                </Toggle>
 
-            {isOpen ? (
-                <div className="fixed animate-in slide-in-from-top-5 fade-in-20 inset-0 z-0 w-full">
-                    <ul className='absolute bg-white border-b border-zinc-200 shadow-md grid w-full gap-3 px-10 pt-20 pb-4'>
-                        <>
-                            <li className="">
-                                <Link href={'/api/auth/register'} className='flex items-center w-full font-semibold'>
-                                    <span className=' text-green-700'>Get started</span>
-                                    <ArrowRight className='ml-2 h-5 w-5 text-green-700' />
-                                </Link>
-                            </li>
-
-                            <li className="my-3 h-px w-full bg-gray-300" />
-
-                            <li className="">
-                                <Link href={'/api/auth/login'} className='flex items-center w-full font-semibold'>
-                                    Sign in
-                                </Link>
-                            </li>
-
-                            <li className="my-3 h-px w-full bg-gray-300" />
-
-                            <li className="">
-                                <Link href={'/pricing'} className='flex items-center w-full font-semibold'>
-                                    Pricing
-                                </Link>
-                            </li>
-                        </>
-                    </ul>
-                </div>
-            ) : null}
-
-        </div>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-[200px] mr-2 bg-white shadow-md grid gap-3 px-2 py-4">
+                <DropdownMenuItem className='h-full w-full cursor-pointer'>
+                    <RegisterLink href={'/api/auth/register'} className='flex items-center w-full font-semibold'>
+                        <span className=' text-green-700'>Get started</span>
+                        <ArrowRight className='ml-2 h-5 w-5 text-green-700' />
+                    </RegisterLink>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator className='h-[2px] bg-black/10' />
+                <DropdownMenuItem>
+                    <LoginLink href={'/api/auth/login'} className='flex items-center w-full font-semibold'>
+                        Sign in
+                    </LoginLink>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator className='h-[2px] bg-black/10' />
+                <DropdownMenuItem>
+                    <Link href={'/pricing'} className='flex items-center w-full font-semibold'>
+                        Pricing
+                    </Link>
+                </DropdownMenuItem>
+            </DropdownMenuContent>
+        </DropdownMenu>
     )
 }
+
+export default MobileNav
