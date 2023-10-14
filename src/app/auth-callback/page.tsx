@@ -3,18 +3,26 @@
 import { useRouter, useSearchParams } from 'next/navigation'
 import { trpc } from '../_trpc/client'
 import { Loader2 } from 'lucide-react'
+import { useToast } from '@/components/ui/use-toast'
 
 export default function AuthCallback() {
     const router = useRouter()
     const searchParams = useSearchParams()
     const origin = searchParams.get('origin')
 
+    const { toast } = useToast()
+
     trpc.authCallback.useQuery(undefined, {
         onSuccess: ({ success }) => {
             if (success) router.replace(origin ? `/${origin}` : '/dashboard')
         },
         onError: ({ data }) => {
-            if (data?.code === "UNAUTHORIZED") router.push('/dashboard')
+            if (data?.code === "UNAUTHORIZED") router.push('/dashboard');
+            toast({
+                title: "Do you have an account?",
+                description: "Please try to login in you have any or create a new account.",
+                variant: 'destructive'
+            })
         }
     })
 
