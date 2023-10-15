@@ -5,18 +5,24 @@ import { PDFLoader } from "langchain/document_loaders/fs/pdf";
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import { PineconeStore } from "langchain/vectorstores/pinecone";
 import { pinecone } from "@/lib/pinecone";
+import { getUserSubscriptionPlan } from "@/lib/stripe";
+import { PLANS } from "@/lib/constConfig/stripe";
 
 const f = createUploadthing();
 
 export const ourFileRouter = {
   pdfUploader: f({ pdf: { maxFileSize: "4MB" } })
     .middleware(async () => {
+      //* Authentication checking
       const { getUser } = getKindeServerSession();
       const user = getUser();
 
       if (!user || !user.id) throw new Error("Unauthorized");
 
-      return { userId: user.id };
+      //* Subscriptions checking
+      const subscription = await getUserSubscriptionPlan();
+
+      return { subscription, userId: user.id };
     })
     .onUploadComplete(async ({ metadata, file }) => {
       //* add the file info to the database
@@ -44,6 +50,28 @@ export const ourFileRouter = {
 
         const pdfPageData = await loader.load();
         const amountOfPages = pdfPageData.length;
+
+        //* Subscription based features
+        const { isSubscribed } = metadata.subscription;
+
+        const isProPlanExceededLimit =
+          amountOfPages > PLANS.find((p) => p.name === "Pro")!.pagesPerPdf;
+        const isFreePlanExceededLimit =
+          amountOfPages > PLANS.find((p) => p.name === "Free")!.pagesPerPdf;
+
+        if (
+          (isSubscribed && isProPlanExceededLimit) ||
+          (!isSubscribed && isFreePlanExceededLimit)
+        ) {
+          await db.file.update({
+            data: {
+              uploadStatus: "FAILED",
+            },
+            where: {
+              id: createdFile.id,
+            },
+          });
+        }
 
         //* Vectorized and index the pdf in PineconeDB
         const pineconeIndex = pinecone.Index("chatmypdf");
