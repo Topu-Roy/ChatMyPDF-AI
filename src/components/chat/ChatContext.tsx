@@ -146,54 +146,62 @@ export const ChatContextProvider = ({ fileId, children }: ChatContextProviderPro
 
 
                 //* Append accumulated response chunk to the actual message
-                utils.getFileMessages.setInfiniteData(
-                    { fileId, limit: INFINITE_QUERY_DEFAULT_LIMIT },
-                    (oldData) => {
-                        if (!oldData) return { pages: [], pageParams: [] }
+                try {
+                    utils.getFileMessages.setInfiniteData(
+                        { fileId, limit: INFINITE_QUERY_DEFAULT_LIMIT },
+                        (oldData) => {
+                            if (!oldData) return { pages: [], pageParams: [] }
 
-                        let isAIResponseCreated = oldData.pages.some((msg) => msg.messages.some((msg) => msg.id === 'ai_response'))
+                            let isAIResponseCreated = oldData.pages.some((msg) => msg.messages.some((msg) => msg.id === 'ai_response'))
 
-                        let updatedPages = oldData.pages.map((page) => {
-                            if (page === oldData.pages[0]) {
-                                let updatedMessages;
+                            let updatedPages = oldData.pages.map((page) => {
+                                if (page === oldData.pages[0]) {
+                                    let updatedMessages;
 
-                                if (!isAIResponseCreated) {
-                                    updatedMessages = [
-                                        {
-                                            createdAt: new Date().toISOString(),
-                                            id: 'ai_response',
-                                            text: accumulatedResponse,
-                                            isUserMessage: false,
-                                        },
-                                        ...page.messages
-                                    ]
-                                } else {
-                                    updatedMessages = page.messages.map((message) => {
-                                        if (message.id === 'ai_response') {
-                                            return {
-                                                ...message,
+                                    if (!isAIResponseCreated) {
+                                        updatedMessages = [
+                                            {
+                                                createdAt: new Date().toISOString(),
+                                                id: 'ai_response',
                                                 text: accumulatedResponse,
+                                                isUserMessage: false,
+                                            },
+                                            ...page.messages
+                                        ]
+                                    } else {
+                                        updatedMessages = page.messages.map((message) => {
+                                            if (message.id === 'ai_response') {
+                                                return {
+                                                    ...message,
+                                                    text: accumulatedResponse,
+                                                }
                                             }
-                                        }
-                                        return message
-                                    })
+                                            return message
+                                        })
+                                    }
+
+                                    return {
+                                        ...page,
+                                        messages: updatedMessages
+                                    }
                                 }
 
-                                return {
-                                    ...page,
-                                    messages: updatedMessages
-                                }
+                                return page
+                            })
+
+                            return {
+                                ...oldData,
+                                pages: updatedPages
                             }
-
-                            return page
-                        })
-
-                        return {
-                            ...oldData,
-                            pages: updatedPages
                         }
-                    }
-                )
+                    )
+                } catch (error) {
+                    toast({
+                        title: "Something went wrong",
+                        description: "something bad happened, Please try again",
+                        variant: 'destructive'
+                    })
+                }
             }
         }
     })
