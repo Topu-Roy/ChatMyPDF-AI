@@ -4,12 +4,10 @@ import { ArrowRight, Menu } from 'lucide-react'
 import { LoginLink, RegisterLink } from '@kinde-oss/kinde-auth-nextjs/server'
 import { Button } from './ui/button'
 
-type Props = {}
-
-function MobileNav({ }: Props) {
+function MobileNav() {
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger asChild>
+            <DropdownMenuTrigger className='sm:hidden' asChild>
                 <Button className='focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-0 bg-slate-200 hover:bg-slate-300'>
                     <Menu className='h-5 w-5 text-zinc-700 relative z-50' />
                 </Button>
