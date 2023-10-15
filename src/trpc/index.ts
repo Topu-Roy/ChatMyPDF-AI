@@ -114,7 +114,7 @@ export const appRouter = router({
       })
     )
     .query(async ({ ctx, input }) => {
-      const { user, userId } = ctx;
+      const { userId } = ctx;
       const { fileId, cursor } = input;
       const limit = input.limit ?? INFINITE_QUERY_DEFAULT_LIMIT;
 
@@ -125,6 +125,8 @@ export const appRouter = router({
         },
       });
 
+      if (!file) throw new TRPCError({ code: "NOT_FOUND" });
+
       const messages = await db.message.findMany({
         take: limit + 1,
         where: {
@@ -133,6 +135,7 @@ export const appRouter = router({
         orderBy: {
           createdAt: "desc",
         },
+
         //* It's for identify the last message
         //* and fetch the next messages based on the last message
         cursor: cursor ? { id: cursor } : undefined,
