@@ -10,14 +10,14 @@ import { useToast } from "./ui/use-toast";
 import { trpc } from "@/app/_trpc/client";
 import { useRouter } from "next/navigation";
 
-export default function UploadDropzone() {
+export default function UploadDropzone({ isSubscribed }: { isSubscribed: boolean }) {
 
     const [isUploading, setIsUploading] = useState(true)
     const [uploadProgress, setUploadProgress] = useState(0)
     const router = useRouter();
 
     const { toast } = useToast()
-    const { startUpload } = useUploadThing('pdfUploader')
+    const { startUpload } = useUploadThing(isSubscribed ? 'proPlanUploader' : 'freePlanUploader')
 
 
 

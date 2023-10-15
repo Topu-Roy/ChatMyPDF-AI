@@ -10,7 +10,7 @@ import { format } from "date-fns";
 import { Button } from "./ui/button";
 import { useToast } from "./ui/use-toast";
 
-export default function DashboardComponent() {
+export default function DashboardComponent({ isSubscribed }: { isSubscribed: boolean }) {
     // This state is for showing loading status
     const [currentlyDeletingFile, setCurrentlyDeletingFile] = useState<string | null>(null)
 
@@ -48,7 +48,7 @@ export default function DashboardComponent() {
         <main className="mx-auto max-w-7xl px-2 md:p-10">
             <div className="mt-8 flex flex-col items-start justify-between gap-4 border-b border-gray-200 pb-5 sm:flex-row sm:items-center sm:gap-0">
                 <h2 className="mb-3 font-black text-5xl text-gray-900">My Files</h2>
-                <UploadButton />
+                <UploadButton isSubscribed={isSubscribed} />
             </div>
 
             {/* Show user files */}
