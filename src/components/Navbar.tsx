@@ -17,7 +17,7 @@ export default function Navbar() {
             <MaxWidthWrapper className="h-full">
                 <div className="flex h-full items-center justify-between border-b border-zinc-200">
                     <Link href={"/"} className="flex z-40 font-bold text-xl">
-                        <span>ChatMyPDF.</span>
+                        <p>PDF<span className="text-blue-600">Chatter</span>.</p>
                     </Link>
 
                     <div className="items-center space-x-4 flex">

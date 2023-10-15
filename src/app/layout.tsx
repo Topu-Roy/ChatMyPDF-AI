@@ -9,8 +9,8 @@ import { cn, generateMetadata } from '@/lib/utils'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = generateMetadata({
-  title: "ChatMyPDF - Chat with advanced AI based on your PDF's",
-  description: "ChatMyPDF is a free software that allows you to ask questions to an AI about the content of your PDF files.",
+  title: "PDFChatter - Chat with advanced AI based on your PDF's",
+  description: "PDFChatter is a free software that allows you to ask questions to an AI about the content of your PDF files.",
   image: "/thumbnail.png",
   icons: "/favicon.ico",
   noIndex: false
