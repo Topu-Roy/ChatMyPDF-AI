@@ -104,7 +104,10 @@ export default function UploadDropzone({ isSubscribed }: { isSubscribed: boolean
                             <div className="flex flex-col justify-center items-center pt-5 pb-6">
                                 <Cloud className="h-6 w-6 text-zinc-500 mb-2" />
                                 <p className="mb-2 text-sm text-zinc-700">
-                                    <span className="font-semibold">Click to upload</span> or Drag &apos;n&apos; drop PDF
+                                    <span className="font-semibold">Click to upload</span> or Drag &apos;n&apos; drop
+                                </p>
+                                <p>
+                                    PDF only (max {isSubscribed ? '16MB' : '4MB'})
                                 </p>
                             </div>
 
