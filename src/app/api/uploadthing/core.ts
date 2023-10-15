@@ -32,6 +32,14 @@ type onUploadCompleteType = {
 };
 
 const onUploadComplete = async ({ metadata, file }: onUploadCompleteType) => {
+  const isFileAlreadyUploaded = await db.file.findFirst({
+    where: {
+      key: file.key,
+    },
+  });
+
+  if (isFileAlreadyUploaded) return;
+
   //* add the file info to the database
 
   const createdFile = await db.file.create({
