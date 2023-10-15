@@ -2,17 +2,17 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 import Link from 'next/link'
 import { ArrowRight, Menu } from 'lucide-react'
 import { LoginLink, RegisterLink } from '@kinde-oss/kinde-auth-nextjs/server'
-import { Toggle } from './ui/toggle'
+import { Button } from './ui/button'
 
 type Props = {}
 
 function MobileNav({ }: Props) {
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger className='focus-visible:ring-0 bg-slate-200' asChild>
-                <Toggle aria-label="Toggle italic" className='focus-visible:ring-0'>
+            <DropdownMenuTrigger asChild>
+                <Button className='focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-0 bg-slate-200 hover:bg-slate-300'>
                     <Menu className='h-5 w-5 text-zinc-700 relative z-50' />
-                </Toggle>
+                </Button>
 
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-[200px] mr-2 bg-white shadow-md grid gap-3 px-2 py-4">
