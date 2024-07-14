@@ -1,5 +1,5 @@
-import { AppRouter } from "@/trpc";
-import { inferRouterOutputs } from "@trpc/server";
+import { type AppRouter } from "@/trpc";
+import { type inferRouterOutputs } from "@trpc/server";
 
 type AppRouterType = inferRouterOutputs<AppRouter>;
 type MessageOutputFromTRPC = AppRouterType["getFileMessages"]["messages"];

@@ -2,15 +2,19 @@ import { db } from "@/db";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import Stripe from "stripe";
 import { PLANS } from "./constConfig/stripe";
+import { env } from "@/env";
+import { redirect } from "next/navigation";
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? "", {
-  apiVersion: "2023-08-16",
+export const stripe = new Stripe(env.STRIPE_SECRET_KEY ?? "", {
+  apiVersion: "2024-06-20",
   typescript: true,
 });
 
 export async function getUserSubscriptionPlan() {
   const { getUser } = getKindeServerSession();
-  const user = getUser();
+  const user = await getUser();
+
+  if (!user) return redirect("/auth-callback");
 
   if (!user.id) {
     return {
@@ -40,8 +44,8 @@ export async function getUserSubscriptionPlan() {
 
   const isSubscribed = Boolean(
     dbUser.stripePriceId &&
-      dbUser.stripeCurrentPeriodEnd && // 86400000 = 1 day
-      convertedDate.getTime() + 86_400_000 > Date.now()
+    dbUser.stripeCurrentPeriodEnd && // 86400000 = 1 day
+    convertedDate.getTime() + 86_400_000 > Date.now(),
   );
 
   const plan = isSubscribed
@@ -51,7 +55,7 @@ export async function getUserSubscriptionPlan() {
   let isCanceled = false;
   if (isSubscribed && dbUser.stripeSubscriptionId) {
     const stripePlan = await stripe.subscriptions.retrieve(
-      dbUser.stripeSubscriptionId
+      dbUser.stripeSubscriptionId,
     );
     isCanceled = stripePlan.cancel_at_period_end;
   }
@@ -65,3 +69,5 @@ export async function getUserSubscriptionPlan() {
     isCanceled,
   };
 }
+
+export type getUserSubscriptionPlanType = Awaited<ReturnType<typeof getUserSubscriptionPlan>>

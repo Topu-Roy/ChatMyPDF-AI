@@ -5,16 +5,17 @@ import { SendMessageValidator } from "@/lib/validator/sendMessageValidator";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import { PineconeStore } from "langchain/vectorstores/pinecone";
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { OpenAIStream, StreamingTextResponse } from "ai";
 
 export async function POST(req: NextRequest) {
-  const body = await req.json();
+  const body: unknown = await req.json();
   if (!body) return NextResponse.json("Body is required", { status: 401 });
 
   // * Check if the user is authenticated
   const { getUser } = getKindeServerSession();
-  const user = getUser();
+  const user = await getUser();
+
   if (!user) return NextResponse.json("Unauthorized", { status: 401 });
 
   // * Validate the body
@@ -24,7 +25,7 @@ export async function POST(req: NextRequest) {
   const file = await db.file.findFirst({
     where: {
       id: fileId,
-      kindeId: user.id!,
+      kindeId: user.id,
     },
   });
 
@@ -43,12 +44,12 @@ export async function POST(req: NextRequest) {
     data: {
       text: message,
       isUserMessage: true,
-      kindeId: user.id!,
+      kindeId: user.id,
       fileId: fileId,
     },
   });
 
-  //* Vectorize the messages
+  //* Vectorized the messages
   const embeddings = new OpenAIEmbeddings({
     openAIApiKey: process.env.OPEN_AI_API_KEY,
   });
@@ -96,10 +97,13 @@ export async function POST(req: NextRequest) {
     \n----------------\n
     
     PREVIOUS CONVERSATION:
-    ${formattedPreviousMessages.map((message) => {
-      if (message.role === "user") return `User: ${message.content}\n`;
-      return `Assistant: ${message.content}\n`;
-    })}
+    ${formattedPreviousMessages
+            .map((message) => {
+              if (message.role === "user") return `User: ${message.content}\n`;
+              return `Assistant: ${message.content}\n`;
+            })
+            .join("")
+          }
     
     \n----------------\n
     
@@ -116,7 +120,7 @@ export async function POST(req: NextRequest) {
     async onCompletion(completion) {
       await db.message.create({
         data: {
-          kindeId: user.id!,
+          kindeId: user.id,
           fileId,
           text: completion,
           isUserMessage: false,

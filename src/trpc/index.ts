@@ -11,11 +11,11 @@ import { PLANS } from "@/lib/constConfig/stripe";
 export const appRouter = router({
   authCallback: publicProcedure.query(async () => {
     const { getUser } = getKindeServerSession();
-    const user = getUser();
+    const user = await getUser();
 
-    if (!user || !user.email || !user.id) {
-      throw new TRPCError({ code: "UNAUTHORIZED" });
-    }
+    if (!user) throw new TRPCError({ code: "UNAUTHORIZED" });
+    if (!user.id) throw new TRPCError({ code: "UNAUTHORIZED" });
+    if (!user.email) throw new TRPCError({ code: "UNAUTHORIZED" });
 
     // * Check if the user is in the DB
     const dbUser = await db.user.findFirst({

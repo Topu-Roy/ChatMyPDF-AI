@@ -1,5 +1,5 @@
-import { getUserSubscriptionPlan } from "@/lib/stripe";
+import { type getUserSubscriptionPlanType } from "@/lib/stripe";
 
 export type SubscriptionPlanType = {
-  subscriptionPlan: Awaited<ReturnType<typeof getUserSubscriptionPlan>>;
+  subscriptionPlan: getUserSubscriptionPlanType;
 };

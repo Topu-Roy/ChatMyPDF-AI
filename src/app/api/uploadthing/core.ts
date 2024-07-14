@@ -13,9 +13,10 @@ const f = createUploadthing();
 const middleware = async () => {
   //* Authentication checking
   const { getUser } = getKindeServerSession();
-  const user = getUser();
+  const user = await getUser();
 
-  if (!user || !user.id) throw new Error("Unauthorized");
+  if (!user) throw new Error("Unauthorized");
+  if (!user.id) throw new Error("Unauthorized");
 
   //* Subscriptions checking
   const subscription = await getUserSubscriptionPlan();

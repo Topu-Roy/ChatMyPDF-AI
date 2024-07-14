@@ -1,59 +1,59 @@
-datasource db {
-  provider = "mongodb"
-  url      = env("DATABASE_URL")
+generator client {
+    provider = "prisma-client-js"
 }
 
-generator client {
-  provider = "prisma-client-js"
+datasource db {
+    provider = "mongodb"
+    url      = env("DATABASE_URL")
 }
 
 model User {
-  id      String  @id @default(auto()) @map("_id") @db.ObjectId
-  kindeId String  @unique
-  email   String  @unique
-  name    String?
+    id      String  @id @default(auto()) @map("_id") @db.ObjectId
+    kindeId String  @unique
+    email   String  @unique
+    name    String?
 
-  File    File[]
-  Message Message[]
+    File    File[]
+    Message Message[]
 
-  stripeCustomerId       String?   @unique @map("stripe_customer_id")
-  stripeSubscriptionId   String?   @unique @map("stripe_subscription_id")
-  stripePriceId          String?   @unique @map("stripe_price_id")
-  stripeCurrentPeriodEnd DateTime? @unique @map("stripe_current_period_end")
+    stripeCustomerId       String?   @unique @map("stripe_customer_id")
+    stripeSubscriptionId   String?   @unique @map("stripe_subscription_id")
+    stripePriceId          String?   @unique @map("stripe_price_id")
+    stripeCurrentPeriodEnd DateTime? @unique @map("stripe_current_period_end")
 }
 
 enum UploadStatus {
-  PENDING
-  PROCESSING
-  FAILED
-  SUCCESS
+    PENDING
+    PROCESSING
+    FAILED
+    SUCCESS
 }
 
 model File {
-  id           String       @id @default(auto()) @map("_id") @db.ObjectId
-  name         String
-  uploadStatus UploadStatus @default(PENDING)
-  url          String
-  key          String
+    id           String       @id @default(auto()) @map("_id") @db.ObjectId
+    name         String
+    uploadStatus UploadStatus @default(PENDING)
+    url          String
+    key          String
 
-  Message               Message[]
-  lastMessageSentByUser String?
+    Message               Message[]
+    lastMessageSentByUser String?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now())
 
-  User    User?  @relation(fields: [kindeId], references: [kindeId])
-  kindeId String
+    User    User?  @relation(fields: [kindeId], references: [kindeId])
+    kindeId String
 }
 
 model Message {
-  id            String   @id @default(auto()) @map("_id") @db.ObjectId
-  text          String
-  isUserMessage Boolean
-  createdAt     DateTime @default(now())
+    id            String   @id @default(auto()) @map("_id") @db.ObjectId
+    text          String
+    isUserMessage Boolean
+    createdAt     DateTime @default(now())
 
-  User    User?   @relation(fields: [kindeId], references: [kindeId])
-  kindeId String
-  File    File?   @relation(fields: [fileId], references: [id])
-  fileId  String? @db.ObjectId
+    User    User?   @relation(fields: [kindeId], references: [kindeId])
+    kindeId String
+    File    File?   @relation(fields: [fileId], references: [id])
+    fileId  String? @db.ObjectId
 }

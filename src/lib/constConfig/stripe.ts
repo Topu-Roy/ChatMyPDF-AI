@@ -1,3 +1,5 @@
+import { env } from "@/env";
+
 export const PLANS = [
   {
     name: "Free",
@@ -20,8 +22,8 @@ export const PLANS = [
     price: {
       amount: 15,
       priceIds: {
-        test: process.env.STRIPE_PRODUCT_PRICE_ID_TEST,
-        production: process.env.STRIPE_PRODUCT_PRICE_ID_PRODUCTION,
+        test: env.STRIPE_PRODUCT_PRICE_ID_TEST,
+        production: env.STRIPE_PRODUCT_PRICE_ID_PRODUCTION,
       },
     },
   },
